@@ -31,4 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Private ignored files ###
 /src/main/resources/db.properties
+/src/main/java/com/kacperchm/librarybackend/security/constants/SecurityConstants.java
