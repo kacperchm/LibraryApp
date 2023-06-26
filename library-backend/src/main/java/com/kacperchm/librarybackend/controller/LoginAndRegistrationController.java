@@ -1,11 +1,9 @@
 package com.kacperchm.librarybackend.controller;
 
+import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.model.User;
-import com.kacperchm.librarybackend.repository.UsersRepository;
-import org.springframework.http.HttpStatus;
+import com.kacperchm.librarybackend.service.LoginAndRegistrationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,31 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginAndRegistrationController {
 
-    private UsersRepository usersRepository;
-    private PasswordEncoder passwordEncoder;
+    private LoginAndRegistrationService service;
 
-    public LoginAndRegistrationController(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
-        this.usersRepository = usersRepository;
-        this.passwordEncoder = passwordEncoder;
+    public LoginAndRegistrationController(LoginAndRegistrationService service) {
+        this.service = service;
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
-        ResponseEntity response = null;
-        try {
-            String hashPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(hashPassword);
-            User savedUser = usersRepository.save(user);
-            if (savedUser.getId() > 0) {
-                response = ResponseEntity
-                        .status(HttpStatus.CREATED)
-                        .body("User created");
-            }
-        } catch (Exception e) {
-            response = ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An exception occured due to " + e.getMessage());
-        }
-        return response;
+        RegistrationResponse registrationResponse = service.registerUser(user);
+        return ResponseEntity
+                .status(registrationResponse.getStatus())
+                .body(registrationResponse.getMessage());
     }
 }
