@@ -1,4 +1,4 @@
-package com.kacperchm.librarybackend.security;
+/*package com.kacperchm.librarybackend.security;
 
 import com.kacperchm.librarybackend.security.filter.CsrfCookieFilter;
 import com.kacperchm.librarybackend.security.filter.JWTTokenGeneratorFilter;
@@ -24,7 +24,7 @@ import java.util.Collections;
 public class SecurityConfiguration {
 
     @Bean
-    public PasswordEncoder encoder() {
+    public BCryptPasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                         config.setMaxAge(3600L);
                         return config;
                     }
-                }).and().csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/test/global", "/register")
+                }).and().csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/global", "/register")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
@@ -53,10 +53,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/forUser").hasAnyRole("USER","ADMIN")
                 .requestMatchers("/forAdmin").hasRole("ADMIN")
-                .requestMatchers("/swagger-ui.html").authenticated()
                 .requestMatchers("/global", "/register").permitAll()
-                .and().formLogin()
-                .and().httpBasic();
         return http.build();
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 package com.kacperchm.librarybackend.security.filter;
 
 import com.kacperchm.librarybackend.security.constants.SecurityConstants;
@@ -54,3 +55,4 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
     }
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.kacperchm.librarybackend.security;
 
 import com.kacperchm.librarybackend.model.User;
@@ -52,3 +53,4 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
 }
+*/

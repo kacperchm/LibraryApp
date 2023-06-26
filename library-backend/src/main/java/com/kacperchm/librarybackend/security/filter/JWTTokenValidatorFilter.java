@@ -1,3 +1,4 @@
+/*
 package com.kacperchm.librarybackend.security.filter;
 
 import com.kacperchm.librarybackend.security.constants.SecurityConstants;
@@ -52,3 +53,4 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
         return request.getServletPath().equals("/main");
     }
 }
+*/

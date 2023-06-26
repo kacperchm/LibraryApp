@@ -1,3 +1,4 @@
+/*
 package com.kacperchm.librarybackend.security.filter;
 
 import jakarta.servlet.FilterChain;
@@ -19,3 +20,4 @@ public class CsrfCookieFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 }
+*/
