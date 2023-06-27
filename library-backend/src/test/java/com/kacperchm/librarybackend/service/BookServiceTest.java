@@ -198,4 +198,34 @@ public class BookServiceTest {
         assertThat(books.get(1).getTitle()).isEqualTo("Powrót");
         assertThat(books.get(1).getAuthor()).isEqualTo("Nicholas Sparks");
     }
+
+    @Test
+    public void should_return_list_of_books_filtered_by_category() {
+        // given
+        List<Book> bookListToAdd = new ArrayList<>();
+        bookListToAdd.add(new Book(0L,"Stephen King","Lśnienie",2009,"Horror"));
+        bookListToAdd.add(new Book(1L,"Stephen King","To",2001,"Horror"));
+        bookListToAdd.add(new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror"));
+        bookListToAdd.add(new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy"));
+        bookListToAdd.add(new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy"));
+        bookListToAdd.add(new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy"));
+        bookListToAdd.add(new Book(6L,"Nicholas Sparks","Najdłuższa podróż",2015,"Romans"));
+        bookListToAdd.add(new Book(7L,"Nicholas Sparks","Powrót",2013,"Romans"));
+        BookService bookService = new BookService(repository);
+        repository.saveAll(bookListToAdd);
+        BookFilter filter = new BookFilter("Horror", "", "");
+        // when
+        List<Book> books = bookService.getFilteredBooks(filter);
+        // then
+        assertThat(books.size()).isEqualTo(3);
+        assertThat(books.get(0).getCategory()).isEqualTo("Horror");
+        assertThat(books.get(0).getTitle()).isEqualTo("Lśnienie");
+        assertThat(books.get(0).getAuthor()).isEqualTo("Stephen King");
+        assertThat(books.get(1).getCategory()).isEqualTo("Horror");
+        assertThat(books.get(1).getTitle()).isEqualTo("To");
+        assertThat(books.get(1).getAuthor()).isEqualTo("Stephen King");
+        assertThat(books.get(2).getCategory()).isEqualTo("Horror");
+        assertThat(books.get(2).getTitle()).isEqualTo("Smentarz Zwierząt");
+        assertThat(books.get(2).getAuthor()).isEqualTo("Stephen King");
+    }
 }
