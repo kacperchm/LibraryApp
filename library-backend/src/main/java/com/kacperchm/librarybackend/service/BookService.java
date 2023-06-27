@@ -39,27 +39,27 @@ public class BookService {
         String message = "";
         if (!isStringCorrect(book.getAuthor())) {
             fieldsList.add("Author");
-            if (!isStringCorrect(book.getCategory())) {
-                fieldsList.add("Category");
-                if (!isStringCorrect(book.getTitle())) {
+        }
+        if (!isStringCorrect(book.getCategory())) {
+            fieldsList.add("Category");
+        }
+        if (!isStringCorrect(book.getTitle())) {
                     fieldsList.add("Title");
-                    if (!(book.getPublicationYear() / 1900 > 1 && book.getPublicationYear() / LocalDateTime.now().getYear() < 1)) {
-                        fieldsList.add("Publication Year");
-                    }
-                }
-            }
+        }
+        if ((book.getPublicationYear() / 1900 > 1 && book.getPublicationYear() <= LocalDateTime.now().getYear())) {
+            fieldsList.add("Publication Year");
         }
         if (fieldsList.size() > 1) {
-            message = "Fields blank or invalid values: ";
+            message = "Fields with blank or invalid values: ";
             for (String field : fieldsList) {
                 message = message + field + ", ";
             }
         } else {
-            message = "Field blank or invalid value: " + fieldsList.get(0);
+            message = "Field with blank or invalid value: " + fieldsList.get(0);
         }
         message = message.trim();
         if (message.charAt((message.length() - 1)) == ',') {
-            message.substring(0, message.length() - 2);
+            message = message.substring(0, message.length() - 1);
         }
         message = message + ".";
         return message;
@@ -99,13 +99,12 @@ public class BookService {
     }
 
     public List<String> getAllCategories() {
-        List<String> allCategories = new ArrayList<>();
+        Set<String> allCategories = new TreeSet<>();
         List<Book> books = repository.findAll();
         for (Book b: books) {
             allCategories.add(b.getCategory());
         }
-        Collections.sort(allCategories, String.CASE_INSENSITIVE_ORDER);
-        return allCategories;
+        return allCategories.stream().toList();
     }
 
     public List<Book> getFilteredBooks(BookFilter filter) {
