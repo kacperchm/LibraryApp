@@ -20,33 +20,34 @@ public class InMemoryBooksRepository implements BooksRepository {
     @Override
     public List<Book> findAllByAuthorContains(String author) {
         List<Book> bookList = new ArrayList<>();
-        bookDb.forEach(book -> {
-            if (book.getAuthor().contains(author)) {
-                bookList.add(book);
+        for (Book b : bookDb) {
+
+            if (b.getAuthor().contains(author)) {
+                bookList.add(b);
             }
-        });
+        }
         return bookList;
     }
 
     @Override
     public List<Book> findAllByTitleContains(String title) {
         List<Book> bookList = new ArrayList<>();
-        bookDb.forEach(book -> {
-            if (book.getTitle().contains(title)) {
-                bookList.add(book);
+        for (Book b : bookDb) {
+            if (b.getTitle().contains(title)) {
+                bookList.add(b);
             }
-        });
+        }
         return bookList;
     }
 
     @Override
     public List<Book> findAllByCategory(String category) {
         List<Book> bookList = new ArrayList<>();
-        bookDb.forEach(book -> {
-            if (book.getTitle().equals(category)) {
-                bookList.add(book);
+        for (Book b : bookDb) {
+            if (b.getCategory().equals(category)) {
+                bookList.add(b);
             }
-        });
+        }
         return bookList;
     }
 
