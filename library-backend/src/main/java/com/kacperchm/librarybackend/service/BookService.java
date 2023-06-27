@@ -37,11 +37,11 @@ public class BookService {
     private String getRequiredFieldsErrorMessage(Book book) {
         List<String> fieldsList = new ArrayList<>();
         String message = "";
-        if (book.getAuthor() == null || book.getAuthor() == "") {
+        if (!isStringCorrect(book.getAuthor())) {
             fieldsList.add("Author");
-            if (book.getCategory() == null || book.getCategory() == "") {
+            if (!isStringCorrect(book.getCategory())) {
                 fieldsList.add("Category");
-                if (book.getTitle() == null || book.getTitle() == "") {
+                if (!isStringCorrect(book.getTitle())) {
                     fieldsList.add("Title");
                     if (!(book.getPublicationYear() / 1900 > 1 && book.getPublicationYear() / LocalDateTime.now().getYear() < 1)) {
                         fieldsList.add("Publication Year");
@@ -66,9 +66,9 @@ public class BookService {
     }
 
     private boolean areAllRequiredFieldsFilledInCorrect(Book book) {
-        if (verifyString(book.getAuthor())) {
-            if (verifyString(book.getCategory())) {
-                if (verifyString(book.getTitle())) {
+        if (isStringCorrect(book.getAuthor())) {
+            if (isStringCorrect(book.getCategory())) {
+                if (isStringCorrect(book.getTitle())) {
                     if (book.getPublicationYear() <= LocalDateTime.now().getYear()) {
                         return true;
                     } else {
@@ -98,7 +98,7 @@ public class BookService {
         return repository.findAll();
     }
 
-    public List<String> getCategories() {
+    public List<String> getAllCategories() {
         List<String> allCategories = new ArrayList<>();
         List<Book> books = repository.findAll();
         for (Book b: books) {
@@ -108,27 +108,27 @@ public class BookService {
         return allCategories;
     }
 
-    public List<Book> getFilteredBook(BookFilter filter) {
-        if(verifyString(filter.getTitle()) && verifyString(filter.getAuthor()) && verifyString(filter.getCategory())) {
+    public List<Book> getFilteredBooks(BookFilter filter) {
+        if(isStringCorrect(filter.getTitle()) && isStringCorrect(filter.getAuthor()) && isStringCorrect(filter.getCategory())) {
             return repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(),filter.getTitle(),filter.getAuthor());
-        } else if (verifyString(filter.getTitle()) && verifyString(filter.getAuthor())) {
+        } else if (isStringCorrect(filter.getTitle()) && isStringCorrect(filter.getAuthor())) {
             return repository.findBooksByTitleAndAuthor(filter.getTitle(),filter.getAuthor());
-        } else if (verifyString(filter.getAuthor()) && verifyString(filter.getCategory())) {
+        } else if (isStringCorrect(filter.getAuthor()) && isStringCorrect(filter.getCategory())) {
             return repository.findBooksByCategoryAndAuthor(filter.getCategory(), filter.getAuthor());
-        } else if (verifyString(filter.getTitle()) && verifyString(filter.getCategory())) {
+        } else if (isStringCorrect(filter.getTitle()) && isStringCorrect(filter.getCategory())) {
             return repository.findBooksByCategoryAndTitle(filter.getCategory(),filter.getTitle());
-        } else if (verifyString(filter.getTitle())) {
+        } else if (isStringCorrect(filter.getTitle())) {
             return repository.findAllByTitleContains(filter.getTitle());
-        } else if (verifyString(filter.getAuthor())) {
+        } else if (isStringCorrect(filter.getAuthor())) {
             return repository.findAllByAuthorContains(filter.getAuthor());
-        } else if (verifyString(filter.getCategory())) {
+        } else if (isStringCorrect(filter.getCategory())) {
             return repository.findAllByCategory(filter.getCategory());
         } else {
             return Collections.emptyList();
         }
     }
 
-    private boolean verifyString(String strToVerify) {
+    private boolean isStringCorrect(String strToVerify) {
         if(strToVerify.isEmpty() || strToVerify.isBlank() || strToVerify == null) {
             return false;
         }
