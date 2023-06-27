@@ -25,11 +25,21 @@ public class Book {
     public Book() {
     }
 
+    public Book(Long id, String author, String title, int publicationYear, String category) {
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.publicationYear = publicationYear;
+        this.category = category;
+        this.availability = true;
+    }
+
     public Book(String author, String title, int publicationYear, String category) {
         this.author = author;
         this.title = title;
         this.publicationYear = publicationYear;
         this.category = category;
+        this.availability = true;
     }
 
     public Long getId() {
