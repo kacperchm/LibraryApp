@@ -1,4 +1,4 @@
-package com.kacperchm.librarybackend.model;
+package com.kacperchm.librarybackend.model.filter;
 
 public class BookFilter {
     private String category;
