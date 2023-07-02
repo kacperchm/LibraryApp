@@ -1,7 +1,7 @@
 package com.kacperchm.librarybackend.service;
 
 import com.kacperchm.librarybackend.model.Book;
-import com.kacperchm.librarybackend.model.BookFilter;
+import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
 import org.junit.jupiter.api.Test;

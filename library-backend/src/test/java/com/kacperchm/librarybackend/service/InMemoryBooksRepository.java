@@ -55,50 +55,11 @@ public class InMemoryBooksRepository implements BooksRepository {
     public List<Book> findBooksByCategoryTitleAndAuthor(String category, String title, String author) {
         List<Book> bookList = new ArrayList<>();
         for (Book b : bookDb) {
-            if (b.getCategory().equals(category)) {
-                if (b.getTitle().contains(title)) {
-                    if (b.getAuthor().contains(author)) {
+            if (category.isEmpty() || b.getCategory().equals(category)) {
+                if (title.isEmpty() || b.getTitle().contains(title)) {
+                    if (author.isEmpty() || b.getAuthor().contains(author)) {
                         bookList.add(b);
                     }
-                }
-            }
-        }
-        return bookList;
-    }
-
-    @Override
-    public List<Book> findBooksByCategoryAndTitle(String category, String title) {
-        List<Book> bookList = new ArrayList<>();
-        for (Book b : bookDb) {
-            if (b.getCategory().equals(category)) {
-                if (b.getTitle().contains(title)) {
-                    bookList.add(b);
-                }
-            }
-        }
-        return bookList;
-    }
-
-    @Override
-    public List<Book> findBooksByCategoryAndAuthor(String category, String author) {
-        List<Book> bookList = new ArrayList<>();
-        for (Book b : bookDb) {
-            if (b.getCategory().equals(category)) {
-                if (b.getAuthor().contains(author)) {
-                    bookList.add(b);
-                }
-            }
-        }
-        return bookList;
-    }
-
-    @Override
-    public List<Book> findBooksByTitleAndAuthor(String title, String author) {
-        List<Book> bookList = new ArrayList<>();
-        for (Book b : bookDb) {
-            if (b.getTitle().contains(title)) {
-                if (b.getAuthor().contains(author)) {
-                    bookList.add(b);
                 }
             }
         }
