@@ -16,13 +16,4 @@ public interface BooksRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT b FROM Book b WHERE b.category = :category AND b.title LIKE %:title% AND b.author LIKE %:author%")
     List<Book> findBooksByCategoryTitleAndAuthor(@Param("category") String category, @Param("title") String title, @Param("author") String author);
-
-    @Query("SELECT b FROM Book b WHERE b.category = :category AND b.title LIKE %:title%")
-    List<Book> findBooksByCategoryAndTitle(@Param("category") String category, @Param("title") String title);
-
-    @Query("SELECT b FROM Book b WHERE b.category = :category AND b.author LIKE %:author%")
-    List<Book> findBooksByCategoryAndAuthor(@Param("category") String category, @Param("author") String author);
-
-    @Query("SELECT b FROM Book b WHERE b.title LIKE %:title% AND b.author LIKE %:author%")
-    List<Book> findBooksByTitleAndAuthor(@Param("title") String title, @Param("author") String author);
 }

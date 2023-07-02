@@ -1,7 +1,7 @@
 package com.kacperchm.librarybackend.service;
 
 import com.kacperchm.librarybackend.model.Book;
-import com.kacperchm.librarybackend.model.BookFilter;
+import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
 import org.springframework.http.HttpStatus;
@@ -108,27 +108,20 @@ public class BookService {
     }
 
     public List<Book> getFilteredBooks(BookFilter filter) {
-            if(isStringCorrect(filter.getTitle()) && isStringCorrect(filter.getAuthor()) && isStringCorrect(filter.getCategory())) {
-                return repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(),filter.getTitle(),filter.getAuthor());
-            } else if (isStringCorrect(filter.getTitle()) && isStringCorrect(filter.getAuthor())) {
-                return repository.findBooksByTitleAndAuthor(filter.getTitle(),filter.getAuthor());
-            } else if (isStringCorrect(filter.getAuthor()) && isStringCorrect(filter.getCategory())) {
-                return repository.findBooksByCategoryAndAuthor(filter.getCategory(), filter.getAuthor());
-            } else if (isStringCorrect(filter.getTitle()) && isStringCorrect(filter.getCategory())) {
-                return repository.findBooksByCategoryAndTitle(filter.getCategory(),filter.getTitle());
-            } else if (isStringCorrect(filter.getTitle())) {
-                return repository.findAllByTitleContains(filter.getTitle());
-            } else if (isStringCorrect(filter.getAuthor())) {
-                return repository.findAllByAuthorContains(filter.getAuthor());
-            } else if (isStringCorrect(filter.getCategory())) {
-                return repository.findAllByCategory(filter.getCategory());
-            } else {
-                return Collections.emptyList();
+            if(!isStringCorrect(filter.getTitle())) {
+                filter.setTitle("");
+                if(!isStringCorrect(filter.getAuthor())) {
+                    filter.setAuthor("");
+                    if (!isStringCorrect(filter.getCategory())) {
+                        filter.setCategory("");
+                    }
+                }
             }
+            return repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(),filter.getTitle(),filter.getAuthor());
     }
 
     private boolean isStringCorrect(String strToVerify) {
-        if(strToVerify.isEmpty() || strToVerify.isBlank() || strToVerify == null) {
+        if(strToVerify.isBlank() || strToVerify == null) {
             return false;
         }
         return true;

@@ -1,7 +1,7 @@
 package com.kacperchm.librarybackend.controller;
 
 import com.kacperchm.librarybackend.model.Book;
-import com.kacperchm.librarybackend.model.BookFilter;
+import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.service.BookService;
 import org.springframework.http.HttpStatus;
