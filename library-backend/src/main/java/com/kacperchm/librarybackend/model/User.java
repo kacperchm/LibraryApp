@@ -10,16 +10,15 @@ public class User {
     private Long id;
     private String username;
     private String mail;
-
     private String phoneNumber;
     private String password;
     private String role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn
     private LibraryMember libraryMember;
 
