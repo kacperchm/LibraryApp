@@ -45,6 +45,39 @@ public class UserService {
        return usersRepository.findUsersByUsernamePhoneNumberAndMail(filter.getUsername(), filter.getPhoneNumber(), filter.getMail());
     }
 
+    public String changePhoneNumber(Long userId, String newNumber) {
+        if(usersRepository.existsById(userId)) {
+            User user = usersRepository.findById(userId).get();
+                user.setPhoneNumber(newNumber);
+            usersRepository.save(user);
+            return "Number changed successfully";
+        }
+        return "User not exist";
+    }
+
+    public String changeRole(Long userId, String newRole) {
+        if(usersRepository.existsById(userId)) {
+            User user = usersRepository.findById(userId).get();
+            user.setRole(newRole);
+            usersRepository.save(user);
+            return "Role changed successfully";
+        }
+        return "User not exist";
+    }
+
+    public String changePassword(Long userId, String oldPassword, String newPassword) {
+        if(usersRepository.existsById(userId)) {
+            User user = usersRepository.findById(userId).get();
+            if(user.getPassword().equals(oldPassword)) {
+                user.setPassword(newPassword);
+            } else {
+                return "Old password is incorrect";
+            }
+            usersRepository.save(user);
+            return "Password changed successfully";
+        }
+        return "User not exist";
+    }
 
 
     public String changeAddress(Address address, Long userId) {
