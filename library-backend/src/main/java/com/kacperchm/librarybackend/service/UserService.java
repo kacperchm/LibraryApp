@@ -1,12 +1,15 @@
 package com.kacperchm.librarybackend.service;
 
+import com.kacperchm.librarybackend.mapper.UserMapper;
 import com.kacperchm.librarybackend.model.Address;
 import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.model.dto.UserDto;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,19 +23,26 @@ public class UserService {
         this.addressesRepository = addressesRepository;
     }
 
-    public User getUserInfo(Long id) {
+    public UserDto getUserInfo(Long id) {
         User user = null;
+        UserDto dto = null;
         if(usersRepository.existsById(id)) {
             user = usersRepository.findById(id).get();
+            dto = UserMapper.mapToUserDto(user);
         }
-        return user;
+        return dto;
     }
 
-    public List<User> getAllUsersInfo() {
-        return usersRepository.findAll();
+    public List<UserDto> getAllUsersInfo() {
+        List<UserDto> dtoList = new ArrayList<>();
+        List<User> users = usersRepository.findAll();
+        users.forEach(user -> dtoList.add(UserMapper.mapToUserDto(user)));
+        return dtoList;
     }
 
-    public List<User> getAllFilteredUsersInfo(UserFilter filter) {
+    public List<UserDto> getAllFilteredUsersInfo(UserFilter filter) {
+        List<UserDto> dtoList = new ArrayList<>();
+        List<User> users;
         if(!isStringCorrect(filter.getUsername())) {
             filter.setUsername("");
             if(!isStringCorrect(filter.getPhoneNumber())) {
@@ -42,15 +52,19 @@ public class UserService {
                 }
             }
         }
-       return usersRepository.findUsersByUsernamePhoneNumberAndMail(filter.getUsername(), filter.getPhoneNumber(), filter.getMail());
+        users = usersRepository.findUsersByUsernamePhoneNumberAndMail(filter.getUsername(), filter.getPhoneNumber(), filter.getMail());
+        users.forEach(user -> dtoList.add(UserMapper.mapToUserDto(user)));
+        return dtoList;
     }
 
     public String changePhoneNumber(Long userId, String newNumber) {
         if(usersRepository.existsById(userId)) {
-            User user = usersRepository.findById(userId).get();
+            if(newNumber.length() == 9) {
+                User user = usersRepository.findById(userId).get();
                 user.setPhoneNumber(newNumber);
-            usersRepository.save(user);
-            return "Number changed successfully";
+                usersRepository.save(user);
+                return "Number changed successfully";
+            }
         }
         return "User not exist";
     }
@@ -80,7 +94,7 @@ public class UserService {
     }
 
 
-    public String changeAddress(Address address, Long userId) {
+    public String changeAddress( Long userId, Address address) {
         Address existingAddress = null;
         if(usersRepository.existsById(userId)) {
             existingAddress = usersRepository.findById(userId).get().getAddress();

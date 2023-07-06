@@ -17,9 +17,6 @@ public class Book {
     private int publicationYear;
     private String category;
 
-    @OneToMany(mappedBy = "book")
-    private List<BorrowedBook> borrowedList;
-
     private boolean availability;
 
     public Book() {
@@ -88,14 +85,6 @@ public class Book {
 
     public void setAvailability(boolean availability) {
         this.availability = availability;
-    }
-
-    public List<BorrowedBook> getBorrowedList() {
-        return borrowedList;
-    }
-
-    public void setBorrowedList(List<BorrowedBook> borrowedList) {
-        this.borrowedList = borrowedList;
     }
 
     @Override

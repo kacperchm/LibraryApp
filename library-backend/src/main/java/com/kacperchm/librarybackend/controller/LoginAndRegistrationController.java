@@ -1,5 +1,6 @@
 package com.kacperchm.librarybackend.controller;
 
+import com.kacperchm.librarybackend.model.dto.UserDto;
 import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.model.User;
 import com.kacperchm.librarybackend.service.LoginAndRegistrationService;
@@ -18,7 +19,7 @@ public class LoginAndRegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@RequestBody UserDto user) {
         RegistrationResponse registrationResponse = service.registerUser(user);
         return ResponseEntity
                 .status(registrationResponse.getStatus())

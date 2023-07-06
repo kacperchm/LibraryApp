@@ -1,6 +1,7 @@
 package com.kacperchm.librarybackend.service;
 
 import com.kacperchm.librarybackend.model.Book;
+import com.kacperchm.librarybackend.model.dto.BookDto;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
@@ -18,7 +19,7 @@ public class BookServiceTest {
     @Test
     public void should_save_book_when_all_required_fields_are_correct_filled_in() {
         // given
-        Book book = new Book(1L,"Stephen King","Lśnienie",2009,"Horror");
+        BookDto book = new BookDto("Stephen King","Lśnienie",2009,"Horror");
         BookService bookService = new BookService(repository);
         // when
         BookResponse response = bookService.addBook(book);
@@ -32,7 +33,7 @@ public class BookServiceTest {
     @Test
     public void should_return_conflict_response_when_author_and_title_fields_are_not_filled_in_correct() {
         // given
-        Book book = new Book(1L,"","",2009,"Horror");
+        BookDto book = new BookDto("","",2009,"Horror");
         BookService bookService = new BookService(repository);
         // when
         BookResponse response = bookService.addBook(book);
@@ -44,7 +45,7 @@ public class BookServiceTest {
     @Test
     public void should_return_conflict_response_when_title_field_is_not_filled_in_correct() {
         // given
-        Book book = new Book(1L,"Stephen King","",2009,"Horror");
+        BookDto book = new BookDto("Stephen King","",2009,"Horror");
         BookService bookService = new BookService(repository);
         // when
         BookResponse response = bookService.addBook(book);
@@ -81,7 +82,7 @@ public class BookServiceTest {
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         // when
-        List<Book> books = bookService.getAllBooks();
+        List<BookDto> books = bookService.getAllBooks();
         // then
         assertThat(books.size()).isEqualTo(6);
         assertThat(books.get(0).getTitle()).isEqualTo("Lśnienie");
@@ -129,7 +130,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Horror", "King", "nie");
         // when
-        List<Book> books = bookService.getFilteredBooks(filter);
+        List<BookDto> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(2);
         assertThat(books.get(0).getCategory()).isEqualTo("Horror");
@@ -157,7 +158,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("", "ling", "Potter");
         // when
-        List<Book> books = bookService.getFilteredBooks(filter);
+        List<BookDto> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(3);
         assertThat(books.get(0).getCategory()).isEqualTo("Fantasy");
@@ -188,7 +189,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Romans", "par", "");
         // when
-        List<Book> books = bookService.getFilteredBooks(filter);
+        List<BookDto> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(2);
         assertThat(books.get(0).getCategory()).isEqualTo("Romans");
@@ -215,7 +216,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Horror", "", "");
         // when
-        List<Book> books = bookService.getFilteredBooks(filter);
+        List<BookDto> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(3);
         assertThat(books.get(0).getCategory()).isEqualTo("Horror");

@@ -1,7 +1,11 @@
 package com.kacperchm.librarybackend.service;
 
+import com.kacperchm.librarybackend.mapper.UserMapper;
+import com.kacperchm.librarybackend.model.dto.UserDto;
 import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.repository.AddressesRepository;
+import com.kacperchm.librarybackend.repository.MembersRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,18 +17,23 @@ import java.util.List;
 public class LoginAndRegistrationService {
 
     private UsersRepository usersRepository;
+    private AddressesRepository addressesRepository;
+    private MembersRepository membersRepository;
 
-    public LoginAndRegistrationService(UsersRepository usersRepository) {
+    public LoginAndRegistrationService(UsersRepository usersRepository, AddressesRepository addressesRepository, MembersRepository membersRepository) {
         this.usersRepository = usersRepository;
+        this.addressesRepository = addressesRepository;
+        this.membersRepository = membersRepository;
     }
 
-    public RegistrationResponse registerUser(User user) {
+    public RegistrationResponse registerUser(UserDto dto) {
+        User user = UserMapper.mapToUser(dto);
         try {
             if (areDataUnique(user)) {
-                User savedUser = usersRepository.save(user);
-                if (savedUser.getId() > 0) {
-                    return new RegistrationResponse("User create successfully",HttpStatus.CREATED);
-                }
+                usersRepository.save(user);
+                addressesRepository.save(user.getAddress());
+                membersRepository.save(user.getLibraryMember());
+                return new RegistrationResponse("User create successfully",HttpStatus.CREATED);
             }
         } catch (Exception e) {
             return new RegistrationResponse("Failed to create user. Server-side error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

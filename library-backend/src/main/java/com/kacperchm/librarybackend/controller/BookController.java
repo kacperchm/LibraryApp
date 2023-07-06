@@ -1,6 +1,7 @@
 package com.kacperchm.librarybackend.controller;
 
 import com.kacperchm.librarybackend.model.Book;
+import com.kacperchm.librarybackend.model.dto.BookDto;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.service.BookService;
@@ -21,8 +22,8 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addBook(@RequestBody Book book) {
-        BookResponse bookResponse = service.addBook(book);
+    public ResponseEntity<String> addBook(@RequestBody BookDto dto) {
+        BookResponse bookResponse = service.addBook(dto);
         return ResponseEntity
                 .status(bookResponse.getStatus())
                 .body(bookResponse.getMessage());
@@ -37,7 +38,7 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Book>> getAllBooks() {
+    public ResponseEntity<List<BookDto>> getAllBooks() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getAllBooks());
     }
@@ -49,7 +50,7 @@ public class BookController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody BookFilter bookFilter) {
+    public ResponseEntity<List<BookDto>> getFilteredBooks(@RequestBody BookFilter bookFilter) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getFilteredBooks(bookFilter));
     }

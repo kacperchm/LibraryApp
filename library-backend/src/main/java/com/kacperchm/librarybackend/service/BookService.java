@@ -1,6 +1,8 @@
 package com.kacperchm.librarybackend.service;
 
+import com.kacperchm.librarybackend.mapper.BookMapper;
 import com.kacperchm.librarybackend.model.Book;
+import com.kacperchm.librarybackend.model.dto.BookDto;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
@@ -19,11 +21,14 @@ public class BookService {
         this.repository = repository;
     }
 
-    public BookResponse addBook(Book book) {
+    public BookResponse addBook(BookDto bookDto) {
+        Book book = BookMapper.mapToBook(bookDto);
+        int sizeBeforeAdd = repository.findAll().size();
         try {
             if (areAllRequiredFieldsFilledInCorrect(book)) {
-                Book savedBook = repository.save(book);
-                if (savedBook.getId() > 0) {
+                repository.save(book);
+                int sizeAfterAdd = repository.findAll().size();
+                if (sizeAfterAdd > sizeBeforeAdd) {
                     return new BookResponse("Book added successfully", HttpStatus.CREATED);
                 }
 
@@ -94,8 +99,11 @@ public class BookService {
         }
     }
 
-    public List<Book> getAllBooks() {
-        return repository.findAll();
+    public List<BookDto> getAllBooks() {
+        List<BookDto> dtoList = new ArrayList<>();
+        List<Book> books = repository.findAll();
+        books.forEach(b -> dtoList.add(BookMapper.mapToBookDto(b)));
+        return dtoList;
     }
 
     public List<String> getAllCategories() {
@@ -107,7 +115,9 @@ public class BookService {
         return allCategories.stream().toList();
     }
 
-    public List<Book> getFilteredBooks(BookFilter filter) {
+    public List<BookDto> getFilteredBooks(BookFilter filter) {
+        List<Book> books;
+        List<BookDto> dtoList = new ArrayList<>();
             if(!isStringCorrect(filter.getTitle())) {
                 filter.setTitle("");
                 if(!isStringCorrect(filter.getAuthor())) {
@@ -117,7 +127,9 @@ public class BookService {
                     }
                 }
             }
-            return repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(),filter.getTitle(),filter.getAuthor());
+            books = repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(),filter.getTitle(),filter.getAuthor());
+            books.forEach(b -> dtoList.add(BookMapper.mapToBookDto(b)));
+            return dtoList;
     }
 
     private boolean isStringCorrect(String strToVerify) {
