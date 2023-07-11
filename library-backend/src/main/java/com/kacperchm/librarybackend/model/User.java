@@ -2,6 +2,8 @@ package com.kacperchm.librarybackend.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(schema = "Library", name = "Users")
 public class User {
@@ -23,6 +25,17 @@ public class User {
     private LibraryMember libraryMember;
 
     public User() {
+    }
+
+    public User(Long id, String username, String mail, String phoneNumber, String password, String role, Address address, LibraryMember libraryMember) {
+        this.id = id;
+        this.username = username;
+        this.mail = mail;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.role = role;
+        this.address = address;
+        this.libraryMember = libraryMember;
     }
 
     public User(String username, String mail, String phoneNumber, String password, String role, Address address, LibraryMember libraryMember) {
@@ -97,5 +110,18 @@ public class User {
 
     public void setLibraryMember(LibraryMember libraryMember) {
         this.libraryMember = libraryMember;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(mail, user.mail) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, mail, phoneNumber, password, role);
     }
 }
