@@ -1,5 +1,6 @@
 package com.kacperchm.librarybackend.service;
 
+import com.kacperchm.librarybackend.InMemoryRepo.InMemoryBooksRepository;
 import com.kacperchm.librarybackend.model.Book;
 import com.kacperchm.librarybackend.model.dto.BookDto;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
