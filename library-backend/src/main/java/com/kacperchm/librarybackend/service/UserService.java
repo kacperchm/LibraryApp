@@ -118,6 +118,23 @@ public class UserService {
         return "Address update pass successfully";
     }
 
+    public String removeUser(Long id) {
+        String message = "";
+        if (usersRepository.existsById(id)){
+            User user = usersRepository.findById(id).get();
+            if (user.getLibraryMember().getNumOfBorrowedBooks() == 0) {
+                usersRepository.deleteById(id);
+                message = "User removed successfully";
+            } else {
+                message = "User cannot be removed because he has borrowed books.";
+            }
+        }
+        if(message.isEmpty()) {
+            message = "User does not exist";
+        }
+        return message;
+    }
+
     private boolean isStringCorrect(String strToVerify) {
         if(strToVerify.isBlank() || strToVerify == null) {
             return false;
