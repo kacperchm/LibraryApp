@@ -1,4 +1,4 @@
-package com.kacperchm.librarybackend.service;
+package com.kacperchm.librarybackend.InMemoryRepo;
 
 import com.kacperchm.librarybackend.model.Book;
 import com.kacperchm.librarybackend.repository.BooksRepository;

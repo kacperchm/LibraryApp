@@ -91,12 +91,14 @@ public class BookService {
     }
 
     public BookResponse deleteBook(long id) {
-        try {
+        String message = "";
+        if(repository.existsById(id)) {
             repository.deleteById(id);
-            return new BookResponse("Book removed successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            return new BookResponse("Server-side error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            message = "Book removed successfully";
+        } else {
+            message = "Book does not exist";
         }
+            return new BookResponse(message, HttpStatus.OK);
     }
 
     public List<BookDto> getAllBooks() {
