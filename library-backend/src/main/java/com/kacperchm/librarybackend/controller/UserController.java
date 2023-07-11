@@ -90,5 +90,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        String response = service.removeUser(id);
+        if (response.equals("User removed successfully") || response.equals("User does not exist")) {
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
 }
