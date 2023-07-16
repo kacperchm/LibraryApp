@@ -183,7 +183,8 @@ public class InMemoryUserRepository implements UsersRepository {
 
     @Override
     public void deleteById(Long aLong) {
-
+        User user = findById(aLong).get();
+        userDb.remove(user);
     }
 
     @Override

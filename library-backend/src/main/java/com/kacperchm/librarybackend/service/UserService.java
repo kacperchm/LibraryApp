@@ -64,6 +64,8 @@ public class UserService {
                 user.setPhoneNumber(newNumber);
                 usersRepository.save(user);
                 return "Number changed successfully";
+            } else {
+                return "Wrong number format";
             }
         }
         return "User not exist";
@@ -126,7 +128,7 @@ public class UserService {
                 usersRepository.deleteById(id);
                 message = "User removed successfully";
             } else {
-                message = "User cannot be removed because he has borrowed books.";
+                message = "User cannot be removed because he has borrowed books";
             }
         }
         if(message.isEmpty()) {
