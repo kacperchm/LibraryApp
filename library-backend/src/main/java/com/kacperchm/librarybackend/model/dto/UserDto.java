@@ -1,7 +1,6 @@
 package com.kacperchm.librarybackend.model.dto;
 
-import com.kacperchm.librarybackend.model.BorrowedBook;
-import jakarta.persistence.OneToMany;
+import com.kacperchm.librarybackend.model.Borrow;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +15,7 @@ public class UserDto {
     private String surname;
     private int numOfBorrowedBooks;
     private boolean blockade;
-    private List<BorrowedBook> borrowedBookList;
+    private List<Borrow> borrowList;
     private String city;
     private String zipCode;
     private String street;
@@ -33,7 +32,7 @@ public class UserDto {
         this.surname = surname;
         this.numOfBorrowedBooks = 0;
         this.blockade = false;
-        this.borrowedBookList = Collections.emptyList();
+        this.borrowList = Collections.emptyList();
         this.city = city;
         this.zipCode = zipCode;
         this.street = street;
@@ -41,7 +40,7 @@ public class UserDto {
     }
 
     public UserDto(String username, String password, String mail, String phoneNumber, String role, String name,
-                   String surname, int numOfBorrowedBooks, boolean blockade, List<BorrowedBook> borrowedBookList, String city, String zipCode, String street, String houseNumber) {
+                   String surname, int numOfBorrowedBooks, boolean blockade, List<Borrow> borrowList, String city, String zipCode, String street, String houseNumber) {
         this.username = username;
         this.password = password;
         this.mail = mail;
@@ -51,7 +50,7 @@ public class UserDto {
         this.surname = surname;
         this.numOfBorrowedBooks = numOfBorrowedBooks;
         this.blockade = blockade;
-        this.borrowedBookList = borrowedBookList;
+        this.borrowList = borrowList;
         this.city = city;
         this.zipCode = zipCode;
         this.street = street;
@@ -130,12 +129,12 @@ public class UserDto {
         this.blockade = blockade;
     }
 
-    public List<BorrowedBook> getBorrowedBookList() {
-        return borrowedBookList;
+    public List<Borrow> getBorrowList() {
+        return borrowList;
     }
 
-    public void setBorrowedBookList(List<BorrowedBook> borrowedBookList) {
-        this.borrowedBookList = borrowedBookList;
+    public void setBorrowList(List<Borrow> borrowList) {
+        this.borrowList = borrowList;
     }
 
     public String getCity() {

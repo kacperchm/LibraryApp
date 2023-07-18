@@ -16,7 +16,7 @@ public class LibraryMember {
     private boolean blockade;
 
     @OneToMany(mappedBy = "member")
-    private List<BorrowedBook> borrowedBookList;
+    private List<Borrow> borrowList;
 
     public LibraryMember() {
     }
@@ -68,11 +68,11 @@ public class LibraryMember {
         this.blockade = blockade;
     }
 
-    public List<BorrowedBook> getBorrowedBookList() {
-        return borrowedBookList;
+    public List<Borrow> getBorrowedBookList() {
+        return borrowList;
     }
 
-    public void setBorrowedBookList(List<BorrowedBook> borrowedBookList) {
-        this.borrowedBookList = borrowedBookList;
+    public void setBorrowedBookList(List<Borrow> borrowList) {
+        this.borrowList = borrowList;
     }
 }

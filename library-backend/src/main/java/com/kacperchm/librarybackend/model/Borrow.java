@@ -3,11 +3,10 @@ package com.kacperchm.librarybackend.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(schema = "Library", name = "BorrowedBooks")
-public class BorrowedBook {
+public class Borrow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,10 +22,10 @@ public class BorrowedBook {
     private LocalDateTime returnDate;
     private boolean returned;
 
-    public BorrowedBook() {
+    public Borrow() {
     }
 
-    public BorrowedBook(LibraryMember member, Book book) {
+    public Borrow(LibraryMember member, Book book) {
         this.member = member;
         this.book = book;
         this.borrowDate = LocalDateTime.now();

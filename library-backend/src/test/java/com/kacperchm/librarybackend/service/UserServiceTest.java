@@ -466,8 +466,8 @@ public class UserServiceTest {
         Address address2 = new Address("Kraków", "55-350", "Szkolna", "23/6");
         addressesRepository.save(address2);
         LibraryMember member2 = new LibraryMember("Krystian", "Froń");
-        List<BorrowedBook> books = new ArrayList<>();
-        books.add(new BorrowedBook(member2, new Book(1L,"Stephen King","To",2001,"Horror")));
+        List<Borrow> books = new ArrayList<>();
+        books.add(new Borrow(member2, new Book(1L,"Stephen King","To",2001,"Horror")));
         member2.setBorrowedBookList(books);
         member2.setNumOfBorrowedBooks(member2.getBorrowedBookList().size());
         User user2 = new User(2L, "cris111", "cris111@gmail.com", "621874561", "cris", "ROLE_USER", address2, member2);

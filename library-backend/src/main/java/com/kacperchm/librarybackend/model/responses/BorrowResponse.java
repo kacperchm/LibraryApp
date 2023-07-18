@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-public class BorrowedResponse {
+public class BorrowResponse {
     private List<String> message;
     private HttpStatus status;
 
-    public BorrowedResponse(List<String> message, HttpStatus status) {
+    public BorrowResponse(List<String> message, HttpStatus status) {
         this.message = message;
         this.status = status;
     }
