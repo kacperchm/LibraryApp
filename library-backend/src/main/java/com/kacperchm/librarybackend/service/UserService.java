@@ -68,7 +68,7 @@ public class UserService {
                 return "Wrong number format";
             }
         }
-        return "User not exist";
+        return "User does not exist";
     }
 
     public String changeRole(Long userId, String newRole) {
@@ -78,7 +78,7 @@ public class UserService {
             usersRepository.save(user);
             return "Role changed successfully";
         }
-        return "User not exist";
+        return "User does not exist";
     }
 
     public String changePassword(Long userId, String oldPassword, String newPassword) {
@@ -92,7 +92,7 @@ public class UserService {
             usersRepository.save(user);
             return "Password changed successfully";
         }
-        return "User not exist";
+        return "User does not exist";
     }
 
 
@@ -102,7 +102,7 @@ public class UserService {
             existingAddress = usersRepository.findById(userId).get().getAddress();
         }
         if(existingAddress == null) {
-            return "User not exist";
+            return "User does not exist";
         }
         if(isStringCorrect(address.getCity())) {
             existingAddress.setCity(address.getCity());

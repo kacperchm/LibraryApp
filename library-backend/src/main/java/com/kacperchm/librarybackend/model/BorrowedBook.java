@@ -21,6 +21,7 @@ public class BorrowedBook {
 
     private LocalDateTime borrowDate;
     private LocalDateTime returnDate;
+    private boolean returned;
 
     public BorrowedBook() {
     }
@@ -30,6 +31,7 @@ public class BorrowedBook {
         this.book = book;
         this.borrowDate = LocalDateTime.now();
         this.returnDate = borrowDate.plusMonths(1);
+        this.returned = false;
     }
 
     public Long getId() {
@@ -70,5 +72,13 @@ public class BorrowedBook {
 
     public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public boolean isReturned() {
+        return returned;
+    }
+
+    public void setReturned(boolean returned) {
+        this.returned = returned;
     }
 }
