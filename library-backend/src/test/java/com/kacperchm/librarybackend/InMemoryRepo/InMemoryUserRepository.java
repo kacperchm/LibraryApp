@@ -1,5 +1,6 @@
 package com.kacperchm.librarybackend.InMemoryRepo;
 
+import com.kacperchm.librarybackend.model.LibraryMember;
 import com.kacperchm.librarybackend.model.User;
 import com.kacperchm.librarybackend.repository.UsersRepository;
 import org.springframework.data.domain.Example;

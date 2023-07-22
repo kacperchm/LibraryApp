@@ -173,6 +173,11 @@ public class InMemoryBooksRepository implements BooksRepository {
 
     @Override
     public boolean existsById(Long aLong) {
+        for (Book b: bookDb) {
+            if(b.getId() == aLong) {
+                return true;
+            }
+        }
         return false;
     }
 

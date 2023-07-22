@@ -1,6 +1,7 @@
 package com.kacperchm.librarybackend.repository;
 
 import com.kacperchm.librarybackend.model.Book;
+import com.kacperchm.librarybackend.model.LibraryMember;
 import com.kacperchm.librarybackend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

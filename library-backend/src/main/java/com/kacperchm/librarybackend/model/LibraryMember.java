@@ -3,6 +3,7 @@ package com.kacperchm.librarybackend.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(schema = "Library", name = "Members")
@@ -74,5 +75,18 @@ public class LibraryMember {
 
     public void setBorrowedBookList(List<Borrow> borrowList) {
         this.borrowList = borrowList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LibraryMember member = (LibraryMember) o;
+        return Objects.equals(id, member.id) && Objects.equals(name, member.name) && Objects.equals(surname, member.surname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname);
     }
 }

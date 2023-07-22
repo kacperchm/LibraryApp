@@ -2,10 +2,12 @@ package com.kacperchm.librarybackend.service;
 
 import com.kacperchm.librarybackend.model.Book;
 import com.kacperchm.librarybackend.model.Borrow;
+import com.kacperchm.librarybackend.model.LibraryMember;
 import com.kacperchm.librarybackend.model.User;
 import com.kacperchm.librarybackend.model.responses.BorrowResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
 import com.kacperchm.librarybackend.repository.BorrowedBooksRepository;
+import com.kacperchm.librarybackend.repository.MembersRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,11 +21,13 @@ public class BorrowService {
     private BorrowedBooksRepository borrowedBooksRepository;
     private UsersRepository usersRepository;
     private BooksRepository booksRepository;
+    private MembersRepository membersRepository;
 
-    public BorrowService(BorrowedBooksRepository borrowedBooksRepository, UsersRepository usersRepository, BooksRepository booksRepository) {
+    public BorrowService(BorrowedBooksRepository borrowedBooksRepository, UsersRepository usersRepository, BooksRepository booksRepository, MembersRepository membersRepository) {
         this.borrowedBooksRepository = borrowedBooksRepository;
         this.usersRepository = usersRepository;
         this.booksRepository = booksRepository;
+        this.membersRepository = membersRepository;
     }
 
     public BorrowResponse borrowBook(Long userId, Long bookId) {
@@ -78,6 +82,15 @@ public class BorrowService {
             Book book = borrow.getBook();
             book.setAvailability(true);
             booksRepository.save(book);
+
+            LibraryMember member = borrow.getMember();
+            member.setNumOfBorrowedBooks(member.getNumOfBorrowedBooks() - 1);
+            int ownedBooks = member.getNumOfBorrowedBooks();
+            if(ownedBooks < 5 && member.isBlockade()) {
+                member.setBlockade(false);
+            }
+            membersRepository.save(member);
+
             messages.add("Book has been returned");
             return new BorrowResponse(messages, HttpStatus.OK);
         }
