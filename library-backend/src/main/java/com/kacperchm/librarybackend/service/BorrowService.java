@@ -6,7 +6,7 @@ import com.kacperchm.librarybackend.model.LibraryMember;
 import com.kacperchm.librarybackend.model.User;
 import com.kacperchm.librarybackend.model.responses.BorrowResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
-import com.kacperchm.librarybackend.repository.BorrowedBooksRepository;
+import com.kacperchm.librarybackend.repository.BorrowRepository;
 import com.kacperchm.librarybackend.repository.MembersRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,13 @@ import java.util.List;
 @Service
 public class BorrowService {
 
-    private BorrowedBooksRepository borrowedBooksRepository;
+    private BorrowRepository borrowRepository;
     private UsersRepository usersRepository;
     private BooksRepository booksRepository;
     private MembersRepository membersRepository;
 
-    public BorrowService(BorrowedBooksRepository borrowedBooksRepository, UsersRepository usersRepository, BooksRepository booksRepository, MembersRepository membersRepository) {
-        this.borrowedBooksRepository = borrowedBooksRepository;
+    public BorrowService(BorrowRepository borrowRepository, UsersRepository usersRepository, BooksRepository booksRepository, MembersRepository membersRepository) {
+        this.borrowRepository = borrowRepository;
         this.usersRepository = usersRepository;
         this.booksRepository = booksRepository;
         this.membersRepository = membersRepository;
@@ -46,7 +46,7 @@ public class BorrowService {
         }
         if(book != null && bookStatus && user != null && !blockade) {
             Borrow borrow = new Borrow(user.getLibraryMember(),book);
-            borrowedBooksRepository.save(borrow);
+            borrowRepository.save(borrow);
             user.getLibraryMember().setNumOfBorrowedBooks(user.getLibraryMember().getNumOfBorrowedBooks() + 1);
             if(user.getLibraryMember().getNumOfBorrowedBooks() >= 5) {
                 user.getLibraryMember().setBlockade(true);
@@ -61,23 +61,23 @@ public class BorrowService {
         }
         if(user == null) {
             messages.add("User does not exist");
+        } else if(blockade) {
+            messages.add("User has blockade");
         }
+
         if(book == null) {
             messages.add("Book does not exist");
-        }
-        if(!bookStatus) {
+        } else if(!bookStatus) {
             messages.add("Book is not available");
         }
-        if(blockade) {
-            messages.add("User has blocade");
-        }
+
         return new BorrowResponse(messages, HttpStatus.CONFLICT);
     }
 
     public BorrowResponse returnBook(Long borrowId) {
         List<String> messages = new ArrayList<>();
-        if(borrowedBooksRepository.existsById(borrowId)) {
-            Borrow borrow = borrowedBooksRepository.findById(borrowId).get();
+        if(borrowRepository.existsById(borrowId)) {
+            Borrow borrow = borrowRepository.findById(borrowId).get();
             borrow.setReturned(true);
             Book book = borrow.getBook();
             book.setAvailability(true);
@@ -100,7 +100,7 @@ public class BorrowService {
 
     public List<Borrow> getNotReturnedBorrowedBook() {
         List<Borrow> borrowedList = new ArrayList<>();
-        borrowedBooksRepository.findAll().forEach(borrowedBook -> {
+        borrowRepository.findAll().forEach(borrowedBook -> {
             if(!borrowedBook.isReturned()) {
                 borrowedList.add(borrowedBook);
             }
@@ -109,12 +109,12 @@ public class BorrowService {
     }
 
     public List<Borrow> getAllBorrowedBook() {
-        return borrowedBooksRepository.findAll();
+        return borrowRepository.findAll();
     }
 
     public List<Borrow> getAllBooksBorrowedByUser(Long memberId) {
         List<Borrow> borrowedList = new ArrayList<>();
-        borrowedBooksRepository.findAll().forEach(borrowedBook -> {
+        borrowRepository.findAll().forEach(borrowedBook -> {
             if(borrowedBook.getMember().getId() == memberId) {
                 borrowedList.add(borrowedBook);
             }
@@ -124,7 +124,7 @@ public class BorrowService {
 
     public List<Borrow> getAllNotReturnedBooksBorrowedByUser(Long memberId) {
         List<Borrow> borrowedList = new ArrayList<>();
-        borrowedBooksRepository.findAll().forEach(borrowedBook -> {
+        borrowRepository.findAll().forEach(borrowedBook -> {
             if(borrowedBook.getMember().getId() == memberId) {
                 if (!borrowedBook.isReturned()) {
                     borrowedList.add(borrowedBook);
@@ -136,7 +136,7 @@ public class BorrowService {
 
     public List<Borrow> getAllReturnedBooksBorrowedByUser(Long memberId) {
         List<Borrow> borrowedList = new ArrayList<>();
-        borrowedBooksRepository.findAll().forEach(borrowedBook -> {
+        borrowRepository.findAll().forEach(borrowedBook -> {
             if(borrowedBook.getMember().getId() == memberId) {
                 if (borrowedBook.isReturned()) {
                     borrowedList.add(borrowedBook);
