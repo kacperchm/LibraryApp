@@ -114,9 +114,10 @@ public class BorrowService {
 
     public List<Borrow> getAllBooksBorrowedByUser(Long memberId) {
         List<Borrow> borrowedList = new ArrayList<>();
-        borrowRepository.findAll().forEach(borrowedBook -> {
-            if(borrowedBook.getMember().getId() == memberId) {
-                borrowedList.add(borrowedBook);
+        List<Borrow> allBorrows = borrowRepository.findAll();
+        allBorrows.forEach(b -> {
+            if(b.getMember().getId() == memberId) {
+                borrowedList.add(b);
             }
         });
         return  borrowedList;

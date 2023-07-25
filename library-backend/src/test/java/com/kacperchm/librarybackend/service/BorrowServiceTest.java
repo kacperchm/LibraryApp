@@ -10,12 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,7 +44,7 @@ public class BorrowServiceTest {
         LibraryMember member1 = new LibraryMember("Andrzej", "Duda");
         User user = new User(10L, "adrew123", "adrew123@gmail.com", "555777666", "andrzej", "ROLE_USER", address1, member1);
 
-        Book book = new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy");
+        Book book = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
 
         // mock repository
         when(booksRepository.existsById(book.getId())).thenReturn(true);
@@ -55,7 +55,7 @@ public class BorrowServiceTest {
         when(usersRepository.save(any(User.class))).thenReturn(null);
 
         // when
-        BorrowResponse response = service.borrowBook(10L,3L);
+        BorrowResponse response = service.borrowBook(10L, 3L);
 
         // then
         assertEquals(HttpStatus.CREATED, response.getStatus());
@@ -73,7 +73,7 @@ public class BorrowServiceTest {
         member1.setBlockade(true);
         User user = new User(10L, "adrew123", "adrew123@gmail.com", "555777666", "andrzej", "ROLE_USER", address1, member1);
 
-        Book book = new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy");
+        Book book = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
 
 
         // mock repository
@@ -85,7 +85,7 @@ public class BorrowServiceTest {
         when(usersRepository.save(any(User.class))).thenReturn(null);
 
         // when
-        BorrowResponse response = service.borrowBook(10L,3L);
+        BorrowResponse response = service.borrowBook(10L, 3L);
 
         // then
         assertEquals(HttpStatus.CONFLICT, response.getStatus());
@@ -99,7 +99,7 @@ public class BorrowServiceTest {
         LibraryMember member1 = new LibraryMember("Andrzej", "Duda");
         User user = new User(10L, "adrew123", "adrew123@gmail.com", "555777666", "andrzej", "ROLE_USER", address1, member1);
 
-        Book book = new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy");
+        Book book = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
         book.setAvailability(false);
 
         // mock repository
@@ -111,7 +111,7 @@ public class BorrowServiceTest {
         when(usersRepository.save(any(User.class))).thenReturn(null);
 
         // when
-        BorrowResponse response = service.borrowBook(10L,3L);
+        BorrowResponse response = service.borrowBook(10L, 3L);
 
         // then
         assertEquals(HttpStatus.CONFLICT, response.getStatus());
@@ -134,7 +134,7 @@ public class BorrowServiceTest {
         when(usersRepository.save(any(User.class))).thenReturn(null);
 
         // when
-        BorrowResponse response = service.borrowBook(10L,3L);
+        BorrowResponse response = service.borrowBook(10L, 3L);
 
         // then
         assertEquals(HttpStatus.CONFLICT, response.getStatus());
@@ -158,12 +158,12 @@ public class BorrowServiceTest {
     @Test
     public void should_return_list_of_not_returned_books() {
         // given
-        Book book1 = new Book(0L,"Stephen King","Lśnienie",2009,"Horror");
-        Book book2 = new Book(1L,"Stephen King","To",2001,"Horror");
-        Book book3 = new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror");
-        Book book4 = new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy");
-        Book book5 = new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy");
-        Book book6 = new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy");
+        Book book1 = new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror");
+        Book book2 = new Book(1L, "Stephen King", "To", 2001, "Horror");
+        Book book3 = new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror");
+        Book book4 = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
+        Book book5 = new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy");
+        Book book6 = new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy");
 
         Address address1 = new Address("Rzeszów", "39-050", "Powstańców Warszawy", "12C");
         LibraryMember member1 = new LibraryMember("Andrzej", "Duda");
@@ -198,5 +198,205 @@ public class BorrowServiceTest {
         assertEquals(borrows.get(0).getBook(), book1);
         assertEquals(borrows.get(1).getBook(), book3);
         assertEquals(borrows.get(2).getBook(), book4);
+    }
+
+    @Test
+    public void should_return_list_of_all_books() {
+        // given
+        Book book1 = new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror");
+        Book book2 = new Book(1L, "Stephen King", "To", 2001, "Horror");
+        Book book3 = new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror");
+        Book book4 = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
+        Book book5 = new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy");
+        Book book6 = new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy");
+
+        Address address1 = new Address("Rzeszów", "39-050", "Powstańców Warszawy", "12C");
+        LibraryMember member1 = new LibraryMember("Andrzej", "Duda");
+        User user = new User(10L, "adrew123", "adrew123@gmail.com", "555777666", "andrzej", "ROLE_USER", address1, member1);
+
+        List<Borrow> borrowList = new ArrayList<>();
+        Borrow borrow1 = new Borrow(user.getLibraryMember(), book1);
+        Borrow borrow2 = new Borrow(user.getLibraryMember(), book2);
+        borrow2.setReturned(true);
+        Borrow borrow3 = new Borrow(user.getLibraryMember(), book3);
+        Borrow borrow4 = new Borrow(user.getLibraryMember(), book4);
+        Borrow borrow5 = new Borrow(user.getLibraryMember(), book5);
+        borrow5.setReturned(true);
+        Borrow borrow6 = new Borrow(user.getLibraryMember(), book6);
+        borrow6.setReturned(true);
+
+        borrowList.add(borrow1);
+        borrowList.add(borrow2);
+        borrowList.add(borrow3);
+        borrowList.add(borrow4);
+        borrowList.add(borrow5);
+        borrowList.add(borrow6);
+
+        // mock repository
+        when(borrowRepository.findAll()).thenReturn(borrowList);
+
+        // when
+        List<Borrow> borrows = service.getAllBorrowedBook();
+
+        // then
+        assertEquals(6, borrows.size());
+        assertEquals(borrows.get(0).getBook(), book1);
+        assertEquals(borrows.get(1).getBook(), book2);
+        assertEquals(borrows.get(2).getBook(), book3);
+        assertEquals(borrows.get(3).getBook(), book4);
+        assertEquals(borrows.get(4).getBook(), book5);
+        assertEquals(borrows.get(5).getBook(), book6);
+    }
+
+    @Test
+    public void should_return_list_of_all_books_borrowed_by_user() {
+        // given
+        Book book1 = new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror");
+        Book book2 = new Book(1L, "Stephen King", "To", 2001, "Horror");
+        Book book3 = new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror");
+        Book book4 = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
+        Book book5 = new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy");
+        Book book6 = new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy");
+
+        Address address1 = new Address("Rzeszów", "39-050", "Powstańców Warszawy", "12C");
+        LibraryMember member1 = new LibraryMember("Andrzej", "Duda");
+        member1.setId(10L);
+        User user1 = new User(10L, "adrew123", "adrew123@gmail.com", "555777666", "andrzej", "ROLE_USER", address1, member1);
+
+        Address address2 = new Address("Rzeszów", "39-051", "Warszawska", "1/3C");
+        LibraryMember member2 = new LibraryMember("Artur", "Karaś");
+        User user2 = new User(11L, "arturo", "arturo78@gmail.com", "555727626", "artur", "ROLE_USER", address2, member2);
+        member2.setId(11L);
+
+        List<Borrow> borrowList = new ArrayList<>();
+        Borrow borrow1 = new Borrow(user2.getLibraryMember(), book1);
+        Borrow borrow2 = new Borrow(user1.getLibraryMember(), book2);
+        borrow2.setReturned(true);
+        Borrow borrow3 = new Borrow(user2.getLibraryMember(), book3);
+        Borrow borrow4 = new Borrow(user2.getLibraryMember(), book4);
+        Borrow borrow5 = new Borrow(user2.getLibraryMember(), book5);
+        borrow5.setReturned(true);
+        Borrow borrow6 = new Borrow(user1.getLibraryMember(), book6);
+        borrow6.setReturned(true);
+
+        borrowList.add(borrow1);
+        borrowList.add(borrow2);
+        borrowList.add(borrow3);
+        borrowList.add(borrow4);
+        borrowList.add(borrow5);
+        borrowList.add(borrow6);
+
+        // mock repository
+        when(borrowRepository.findAll()).thenReturn(borrowList);
+
+        // when
+        List<Borrow> borrows = service.getAllBooksBorrowedByUser(11L);
+
+        // then
+        assertEquals(4, borrows.size());
+        assertEquals(borrows.get(0).getBook(), book1);
+        assertEquals(borrows.get(1).getBook(), book3);
+        assertEquals(borrows.get(2).getBook(), book4);
+        assertEquals(borrows.get(3).getBook(), book5);
+    }
+
+    @Test
+    public void should_return_list_of_all_not_returned_books_borrowed_by_user() {
+        // given
+        Book book1 = new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror");
+        Book book2 = new Book(1L, "Stephen King", "To", 2001, "Horror");
+        Book book3 = new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror");
+        Book book4 = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
+        Book book5 = new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy");
+        Book book6 = new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy");
+
+        Address address1 = new Address("Rzeszów", "39-050", "Powstańców Warszawy", "12C");
+        LibraryMember member1 = new LibraryMember("Andrzej", "Duda");
+        member1.setId(10L);
+        User user1 = new User(10L, "adrew123", "adrew123@gmail.com", "555777666", "andrzej", "ROLE_USER", address1, member1);
+
+        Address address2 = new Address("Rzeszów", "39-051", "Warszawska", "1/3C");
+        LibraryMember member2 = new LibraryMember("Artur", "Karaś");
+        User user2 = new User(11L, "arturo", "arturo78@gmail.com", "555727626", "artur", "ROLE_USER", address2, member2);
+        member2.setId(11L);
+
+        List<Borrow> borrowList = new ArrayList<>();
+        Borrow borrow1 = new Borrow(user2.getLibraryMember(), book1);
+        Borrow borrow2 = new Borrow(user1.getLibraryMember(), book2);
+        borrow2.setReturned(true);
+        Borrow borrow3 = new Borrow(user2.getLibraryMember(), book3);
+        Borrow borrow4 = new Borrow(user2.getLibraryMember(), book4);
+        Borrow borrow5 = new Borrow(user2.getLibraryMember(), book5);
+        borrow5.setReturned(true);
+        Borrow borrow6 = new Borrow(user1.getLibraryMember(), book6);
+        borrow6.setReturned(true);
+
+        borrowList.add(borrow1);
+        borrowList.add(borrow2);
+        borrowList.add(borrow3);
+        borrowList.add(borrow4);
+        borrowList.add(borrow5);
+        borrowList.add(borrow6);
+
+        // mock repository
+        when(borrowRepository.findAll()).thenReturn(borrowList);
+
+        // when
+        List<Borrow> borrows = service.getAllNotReturnedBooksBorrowedByUser(11L);
+
+        // then
+        assertEquals(3, borrows.size());
+        assertEquals(borrows.get(0).getBook(), book1);
+        assertEquals(borrows.get(1).getBook(), book3);
+        assertEquals(borrows.get(2).getBook(), book4);
+    }
+
+    @Test
+    public void should_return_list_of_all_returned_books_borrowed_by_user() {
+        // given
+        Book book1 = new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror");
+        Book book2 = new Book(1L, "Stephen King", "To", 2001, "Horror");
+        Book book3 = new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror");
+        Book book4 = new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy");
+        Book book5 = new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy");
+        Book book6 = new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy");
+
+        Address address1 = new Address("Rzeszów", "39-050", "Powstańców Warszawy", "12C");
+        LibraryMember member1 = new LibraryMember("Andrzej", "Duda");
+        member1.setId(10L);
+        User user1 = new User(10L, "adrew123", "adrew123@gmail.com", "555777666", "andrzej", "ROLE_USER", address1, member1);
+
+        Address address2 = new Address("Rzeszów", "39-051", "Warszawska", "1/3C");
+        LibraryMember member2 = new LibraryMember("Artur", "Karaś");
+        User user2 = new User(11L, "arturo", "arturo78@gmail.com", "555727626", "artur", "ROLE_USER", address2, member2);
+        member2.setId(11L);
+
+        List<Borrow> borrowList = new ArrayList<>();
+        Borrow borrow1 = new Borrow(user2.getLibraryMember(), book1);
+        Borrow borrow2 = new Borrow(user1.getLibraryMember(), book2);
+        borrow2.setReturned(true);
+        Borrow borrow3 = new Borrow(user2.getLibraryMember(), book3);
+        Borrow borrow4 = new Borrow(user2.getLibraryMember(), book4);
+        Borrow borrow5 = new Borrow(user2.getLibraryMember(), book5);
+        borrow5.setReturned(true);
+        Borrow borrow6 = new Borrow(user1.getLibraryMember(), book6);
+        borrow6.setReturned(true);
+
+        borrowList.add(borrow1);
+        borrowList.add(borrow2);
+        borrowList.add(borrow3);
+        borrowList.add(borrow4);
+        borrowList.add(borrow5);
+        borrowList.add(borrow6);
+
+        // mock repository
+        when(borrowRepository.findAll()).thenReturn(borrowList);
+
+        // when
+        List<Borrow> borrows = service.getAllReturnedBooksBorrowedByUser(11L);
+
+        // then
+        assertEquals(1, borrows.size());
+        assertEquals(borrows.get(0).getBook(), book5);
     }
 }
