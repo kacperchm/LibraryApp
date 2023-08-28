@@ -67,18 +67,18 @@ public class UserServiceTest {
         usersRepository.save(user3);
 
         // when
-        List<UserDto> userDtoList = service.getAllUsersInfo();
+        List<User> userDtoList = service.getAllUsersInfo();
         // then
         assertThat(userDtoList.size()).isEqualTo(3);
         assertThat(userDtoList.get(0).getMail()).isEqualTo("adrew123@gmail.com");
         assertThat(userDtoList.get(1).getMail()).isEqualTo("cris111@gmail.com");
         assertThat(userDtoList.get(2).getMail()).isEqualTo("slon68@gmail.com");
-        assertThat(userDtoList.get(0).getName()).isEqualTo("Andrzej");
-        assertThat(userDtoList.get(1).getName()).isEqualTo("Krystian");
-        assertThat(userDtoList.get(2).getName()).isEqualTo("Jan");
-        assertThat(userDtoList.get(0).getCity()).isEqualTo("Rzeszów");
-        assertThat(userDtoList.get(1).getCity()).isEqualTo("Kraków");
-        assertThat(userDtoList.get(2).getCity()).isEqualTo("Kraków");
+        assertThat(userDtoList.get(0).getLibraryMember().getName()).isEqualTo("Andrzej");
+        assertThat(userDtoList.get(1).getLibraryMember().getName()).isEqualTo("Krystian");
+        assertThat(userDtoList.get(2).getLibraryMember().getName()).isEqualTo("Jan");
+        assertThat(userDtoList.get(0).getAddress().getCity()).isEqualTo("Rzeszów");
+        assertThat(userDtoList.get(1).getAddress().getCity()).isEqualTo("Kraków");
+        assertThat(userDtoList.get(2).getAddress().getCity()).isEqualTo("Kraków");
     }
 
     @Test
@@ -112,13 +112,13 @@ public class UserServiceTest {
 
         UserFilter filter = new UserFilter("", "slon", "");
         // when
-        List<UserDto> userDtoList = service.getAllFilteredUsersInfo(filter);
+        List<User> userDtoList = service.getAllFilteredUsersInfo(filter);
         // then
         assertThat(userDtoList.size()).isEqualTo(2);
         assertThat(userDtoList.get(0).getMail()).isEqualTo("slon68@gmail.com");
         assertThat(userDtoList.get(1).getMail()).isEqualTo("slon98@gmail.com");
-        assertThat(userDtoList.get(0).getName()).isEqualTo("Jan");
-        assertThat(userDtoList.get(1).getName()).isEqualTo("Michał");
+        assertThat(userDtoList.get(0).getLibraryMember().getName()).isEqualTo("Jan");
+        assertThat(userDtoList.get(1).getLibraryMember().getName()).isEqualTo("Michał");
     }
 
     @Test
@@ -152,7 +152,7 @@ public class UserServiceTest {
 
         UserFilter filter = new UserFilter("", "", "62");
         // when
-        List<UserDto> userDtoList = service.getAllFilteredUsersInfo(filter);
+        List<User> userDtoList = service.getAllFilteredUsersInfo(filter);
         // then
         assertThat(userDtoList.size()).isEqualTo(2);
         assertThat(userDtoList.get(0).getMail()).isEqualTo("cris111@gmail.com");
@@ -192,7 +192,7 @@ public class UserServiceTest {
 
         UserFilter filter = new UserFilter("slon", "", "62");
         // when
-        List<UserDto> userDtoList = service.getAllFilteredUsersInfo(filter);
+        List<User> userDtoList = service.getAllFilteredUsersInfo(filter);
         // then
         assertThat(userDtoList.size()).isEqualTo(2);
         assertThat(userDtoList.get(0).getMail()).isEqualTo("slon68@gmail.com");
@@ -238,7 +238,7 @@ public class UserServiceTest {
         // when
         String message = service.changePhoneNumber(userId, number);
         // then
-        assertThat(message).isEqualTo("User not exist");
+        assertThat(message).isEqualTo("User does not exist");
     }
 
     @Test
@@ -295,7 +295,7 @@ public class UserServiceTest {
         // when
         String message = service.changeRole(userId, role);
         // then
-        assertThat(message).isEqualTo("User not exist");
+        assertThat(message).isEqualTo("User does not exist");
     }
 
     @Test
@@ -357,7 +357,7 @@ public class UserServiceTest {
         // when
         String message = service.changePassword(userId, old, newPwd);
         // then
-        assertThat(message).isEqualTo("User not exist");
+        assertThat(message).isEqualTo("User does not exist");
         assertThat(usersRepository.existsById(3L)).isEqualTo(false);
     }
 
@@ -398,7 +398,7 @@ public class UserServiceTest {
         // when
         String message = service.changeAddress(userId, newAddress);
         // then
-        assertThat(message).isEqualTo("User not exist");
+        assertThat(message).isEqualTo("User does not exist");
         assertThat(usersRepository.findById(2L).get().getAddress().getCity()).isEqualTo("Rzeszów");
     }
 

@@ -83,7 +83,7 @@ public class BookServiceTest {
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         // when
-        List<BookDto> books = bookService.getAllBooks();
+        List<Book> books = bookService.getAllBooks();
         // then
         assertThat(books.size()).isEqualTo(6);
         assertThat(books.get(0).getTitle()).isEqualTo("Lśnienie");
@@ -131,7 +131,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Horror", "King", "nie");
         // when
-        List<BookDto> books = bookService.getFilteredBooks(filter);
+        List<Book> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(2);
         assertThat(books.get(0).getCategory()).isEqualTo("Horror");
@@ -159,7 +159,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("", "ling", "Potter");
         // when
-        List<BookDto> books = bookService.getFilteredBooks(filter);
+        List<Book> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(3);
         assertThat(books.get(0).getCategory()).isEqualTo("Fantasy");
@@ -190,7 +190,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Romans", "par", "");
         // when
-        List<BookDto> books = bookService.getFilteredBooks(filter);
+        List<Book> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(2);
         assertThat(books.get(0).getCategory()).isEqualTo("Romans");
@@ -217,7 +217,7 @@ public class BookServiceTest {
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Horror", "", "");
         // when
-        List<BookDto> books = bookService.getFilteredBooks(filter);
+        List<Book> books = bookService.getFilteredBooks(filter);
         // then
         assertThat(books.size()).isEqualTo(3);
         assertThat(books.get(0).getCategory()).isEqualTo("Horror");

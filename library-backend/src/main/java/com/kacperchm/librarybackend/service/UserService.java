@@ -33,15 +33,12 @@ public class UserService {
         return dto;
     }
 
-    public List<UserDto> getAllUsersInfo() {
-        List<UserDto> dtoList = new ArrayList<>();
+    public List<User> getAllUsersInfo() {
         List<User> users = usersRepository.findAll();
-        users.forEach(user -> dtoList.add(UserMapper.mapToUserDto(user)));
-        return dtoList;
+        return users;
     }
 
-    public List<UserDto> getAllFilteredUsersInfo(UserFilter filter) {
-        List<UserDto> dtoList = new ArrayList<>();
+    public List<User> getAllFilteredUsersInfo(UserFilter filter) {
         List<User> users;
         if(!isStringCorrect(filter.getUsername())) {
             filter.setUsername("");
@@ -53,8 +50,7 @@ public class UserService {
             }
         }
         users = usersRepository.findUsersByUsernamePhoneNumberAndMail(filter.getUsername(), filter.getPhoneNumber(), filter.getMail());
-        users.forEach(user -> dtoList.add(UserMapper.mapToUserDto(user)));
-        return dtoList;
+        return users;
     }
 
     public String changePhoneNumber(Long userId, String newNumber) {

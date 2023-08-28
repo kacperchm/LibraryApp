@@ -101,11 +101,17 @@ public class BookService {
             return new BookResponse(message, HttpStatus.OK);
     }
 
-    public List<BookDto> getAllBooks() {
-        List<BookDto> dtoList = new ArrayList<>();
+    public List<Book> getAllBooks() {
         List<Book> books = repository.findAll();
-        books.forEach(b -> dtoList.add(BookMapper.mapToBookDto(b)));
-        return dtoList;
+        return books;
+    }
+
+    public BookDto getBook(long id) {
+        Book book = null;
+        if(repository.existsById(id)){
+            book = repository.findById(id).get();
+        }
+        return BookMapper.mapToBookDto(book);
     }
 
     public List<String> getAllCategories() {
@@ -117,7 +123,7 @@ public class BookService {
         return allCategories.stream().toList();
     }
 
-    public List<BookDto> getFilteredBooks(BookFilter filter) {
+    public List<Book> getFilteredBooks(BookFilter filter) {
         List<Book> books;
         List<BookDto> dtoList = new ArrayList<>();
             if(!isStringCorrect(filter.getTitle())) {
@@ -130,8 +136,7 @@ public class BookService {
                 }
             }
             books = repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(),filter.getTitle(),filter.getAuthor());
-            books.forEach(b -> dtoList.add(BookMapper.mapToBookDto(b)));
-            return dtoList;
+            return books;
     }
 
     private boolean isStringCorrect(String strToVerify) {

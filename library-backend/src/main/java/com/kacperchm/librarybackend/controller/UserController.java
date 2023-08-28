@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<List<UserDto>> getUsersDetails() {
-        List<UserDto> users = service.getAllUsersInfo();
+    public ResponseEntity<List<User>> getUsersDetails() {
+        List<User> users = service.getAllUsersInfo();
         if(users.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -42,12 +42,12 @@ public class UserController {
     }
 
     @GetMapping("/filtered-details")
-    public ResponseEntity<List<UserDto>> getUsersDetailsFiltered(
+    public ResponseEntity<List<User>> getUsersDetailsFiltered(
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "mail", required = false) String mail,
             @RequestParam(value = "phoneNumber", required = false) String phoneNumber) {
         UserFilter filter = new UserFilter(username,mail,phoneNumber);
-        List<UserDto> users = service.getAllFilteredUsersInfo(filter);
+        List<User> users = service.getAllFilteredUsersInfo(filter);
         if(users.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

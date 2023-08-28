@@ -38,9 +38,25 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BookDto>> getAllBooks() {
+    public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getAllBooks());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookDto> getBook(@PathVariable("id") Long id) {
+        ResponseEntity<BookDto> response;
+        BookDto book = service.getBook(id);
+        if(book != null) {
+            response = ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(book);
+        } else {
+            response = ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+        return response;
     }
 
     @GetMapping("/categories")
@@ -50,7 +66,7 @@ public class BookController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<BookDto>> getFilteredBooks(@RequestBody BookFilter bookFilter) {
+    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody BookFilter bookFilter) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getFilteredBooks(bookFilter));
     }
