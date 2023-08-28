@@ -1,6 +1,7 @@
 package com.kacperchm.librarybackend.service;
 
 import com.kacperchm.librarybackend.mapper.UserMapper;
+import com.kacperchm.librarybackend.model.LoginCredential;
 import com.kacperchm.librarybackend.model.dto.UserDto;
 import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.model.User;
@@ -24,6 +25,14 @@ public class LoginAndRegistrationService {
         this.usersRepository = usersRepository;
         this.addressesRepository = addressesRepository;
         this.membersRepository = membersRepository;
+    }
+
+    public User loginUser(LoginCredential credential) {
+        User user = null;
+        if(usersRepository.existsByMail(credential.getEmail())) {
+            user = usersRepository.findByMail(credential.getEmail()).get(0);
+        }
+        return user;
     }
 
     public RegistrationResponse registerUser(UserDto dto) {
