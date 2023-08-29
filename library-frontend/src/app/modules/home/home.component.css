@@ -1,0 +1,49 @@
+h1 {
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.p-center {
+  text-overflow: ellipsis;
+  max-width: 800px;
+  text-align: justify;
+}
+
+.p-text {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  margin-bottom: 10px;
+}
+
+.opening-hours {
+  margin-bottom: 4px;
+  text-align: center;
+  justify-content: center
+}
+
+.right-aligned {
+  margin-left: auto;
+}
+
+.iframe-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+mat-card{
+  width: 828px;
+  background-color: navajowhite;
+}
+
+mat-card-header {
+  justify-content: center;
+}
