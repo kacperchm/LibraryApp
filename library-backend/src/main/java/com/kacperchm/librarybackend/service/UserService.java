@@ -1,15 +1,12 @@
 package com.kacperchm.librarybackend.service;
 
-import com.kacperchm.librarybackend.mapper.UserMapper;
 import com.kacperchm.librarybackend.model.Address;
 import com.kacperchm.librarybackend.model.User;
-import com.kacperchm.librarybackend.model.dto.UserDto;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,14 +20,12 @@ public class UserService {
         this.addressesRepository = addressesRepository;
     }
 
-    public UserDto getUserInfo(Long id) {
+    public User getUserInfo(Long id) {
         User user = null;
-        UserDto dto = null;
-        if(usersRepository.existsById(id)) {
+        if (usersRepository.existsById(id)) {
             user = usersRepository.findById(id).get();
-            dto = UserMapper.mapToUserDto(user);
         }
-        return dto;
+        return user;
     }
 
     public List<User> getAllUsersInfo() {
@@ -40,9 +35,9 @@ public class UserService {
 
     public List<User> getAllFilteredUsersInfo(UserFilter filter) {
         List<User> users;
-        if(!isStringCorrect(filter.getUsername())) {
+        if (!isStringCorrect(filter.getUsername())) {
             filter.setUsername("");
-            if(!isStringCorrect(filter.getPhoneNumber())) {
+            if (!isStringCorrect(filter.getPhoneNumber())) {
                 filter.setPhoneNumber("");
                 if (!isStringCorrect(filter.getMail())) {
                     filter.setMail("");
@@ -54,8 +49,8 @@ public class UserService {
     }
 
     public String changePhoneNumber(Long userId, String newNumber) {
-        if(usersRepository.existsById(userId)) {
-            if(newNumber.length() == 9) {
+        if (usersRepository.existsById(userId)) {
+            if (newNumber.length() == 9) {
                 User user = usersRepository.findById(userId).get();
                 user.setPhoneNumber(newNumber);
                 usersRepository.save(user);
@@ -68,7 +63,7 @@ public class UserService {
     }
 
     public String changeRole(Long userId, String newRole) {
-        if(usersRepository.existsById(userId)) {
+        if (usersRepository.existsById(userId)) {
             User user = usersRepository.findById(userId).get();
             user.setRole(newRole);
             usersRepository.save(user);
@@ -78,9 +73,9 @@ public class UserService {
     }
 
     public String changePassword(Long userId, String oldPassword, String newPassword) {
-        if(usersRepository.existsById(userId)) {
+        if (usersRepository.existsById(userId)) {
             User user = usersRepository.findById(userId).get();
-            if(user.getPassword().equals(oldPassword)) {
+            if (user.getPassword().equals(oldPassword)) {
                 user.setPassword(newPassword);
             } else {
                 return "Old password is incorrect";
@@ -92,24 +87,24 @@ public class UserService {
     }
 
 
-    public String changeAddress( Long userId, Address address) {
+    public String changeAddress(Long userId, Address address) {
         Address existingAddress = null;
-        if(usersRepository.existsById(userId)) {
+        if (usersRepository.existsById(userId)) {
             existingAddress = usersRepository.findById(userId).get().getAddress();
         }
-        if(existingAddress == null) {
+        if (existingAddress == null) {
             return "User does not exist";
         }
-        if(isStringCorrect(address.getCity())) {
+        if (isStringCorrect(address.getCity())) {
             existingAddress.setCity(address.getCity());
         }
-        if(isStringCorrect(address.getStreet())) {
+        if (isStringCorrect(address.getStreet())) {
             existingAddress.setStreet(address.getStreet());
         }
-        if(isStringCorrect(address.getZipCode())) {
+        if (isStringCorrect(address.getZipCode())) {
             existingAddress.setZipCode(address.getZipCode());
         }
-        if(isStringCorrect(address.getHouseNumber())) {
+        if (isStringCorrect(address.getHouseNumber())) {
             existingAddress.setHouseNumber(address.getHouseNumber());
         }
         addressesRepository.save(existingAddress);
@@ -118,7 +113,7 @@ public class UserService {
 
     public String removeUser(Long id) {
         String message = "";
-        if (usersRepository.existsById(id)){
+        if (usersRepository.existsById(id)) {
             User user = usersRepository.findById(id).get();
             if (user.getLibraryMember().getNumOfBorrowedBooks() == 0) {
                 usersRepository.deleteById(id);
@@ -127,14 +122,14 @@ public class UserService {
                 message = "User cannot be removed because he has borrowed books";
             }
         }
-        if(message.isEmpty()) {
+        if (message.isEmpty()) {
             message = "User does not exist";
         }
         return message;
     }
 
     private boolean isStringCorrect(String strToVerify) {
-        if(strToVerify.isBlank() || strToVerify == null) {
+        if (strToVerify.isBlank() || strToVerify == null) {
             return false;
         }
         return true;

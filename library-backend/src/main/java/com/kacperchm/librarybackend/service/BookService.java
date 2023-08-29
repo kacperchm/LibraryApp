@@ -1,8 +1,6 @@
 package com.kacperchm.librarybackend.service;
 
-import com.kacperchm.librarybackend.mapper.BookMapper;
 import com.kacperchm.librarybackend.model.Book;
-import com.kacperchm.librarybackend.model.dto.BookDto;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
@@ -10,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class BookService {
@@ -21,12 +22,12 @@ public class BookService {
         this.repository = repository;
     }
 
-    public BookResponse addBook(BookDto bookDto) {
-        Book book = BookMapper.mapToBook(bookDto);
+    public BookResponse addBook(Book book) {
+        Book addedBook = new Book(book.getAuthor(), book.getTitle(), book.getPublicationYear(), book.getCategory());
         int sizeBeforeAdd = repository.findAll().size();
         try {
-            if (areAllRequiredFieldsFilledInCorrect(book)) {
-                repository.save(book);
+            if (areAllRequiredFieldsFilledInCorrect(addedBook)) {
+                repository.save(addedBook);
                 int sizeAfterAdd = repository.findAll().size();
                 if (sizeAfterAdd > sizeBeforeAdd) {
                     return new BookResponse("Book added successfully", HttpStatus.CREATED);
@@ -49,7 +50,7 @@ public class BookService {
             fieldsList.add("Category");
         }
         if (!isStringCorrect(book.getTitle())) {
-                    fieldsList.add("Title");
+            fieldsList.add("Title");
         }
         if ((book.getPublicationYear() / 1900 > 1 && book.getPublicationYear() <= LocalDateTime.now().getYear())) {
             fieldsList.add("Publication Year");
@@ -92,13 +93,13 @@ public class BookService {
 
     public BookResponse deleteBook(long id) {
         String message = "";
-        if(repository.existsById(id)) {
+        if (repository.existsById(id)) {
             repository.deleteById(id);
             message = "Book removed successfully";
         } else {
             message = "Book does not exist";
         }
-            return new BookResponse(message, HttpStatus.OK);
+        return new BookResponse(message, HttpStatus.OK);
     }
 
     public List<Book> getAllBooks() {
@@ -106,18 +107,18 @@ public class BookService {
         return books;
     }
 
-    public BookDto getBook(long id) {
+    public Book getBook(long id) {
         Book book = null;
-        if(repository.existsById(id)){
+        if (repository.existsById(id)) {
             book = repository.findById(id).get();
         }
-        return BookMapper.mapToBookDto(book);
+        return book;
     }
 
     public List<String> getAllCategories() {
         Set<String> allCategories = new TreeSet<>();
         List<Book> books = repository.findAll();
-        for (Book b: books) {
+        for (Book b : books) {
             allCategories.add(b.getCategory());
         }
         return allCategories.stream().toList();
@@ -125,22 +126,21 @@ public class BookService {
 
     public List<Book> getFilteredBooks(BookFilter filter) {
         List<Book> books;
-        List<BookDto> dtoList = new ArrayList<>();
-            if(!isStringCorrect(filter.getTitle())) {
-                filter.setTitle("");
-                if(!isStringCorrect(filter.getAuthor())) {
-                    filter.setAuthor("");
-                    if (!isStringCorrect(filter.getCategory())) {
-                        filter.setCategory("");
-                    }
+        if (!isStringCorrect(filter.getTitle())) {
+            filter.setTitle("");
+            if (!isStringCorrect(filter.getAuthor())) {
+                filter.setAuthor("");
+                if (!isStringCorrect(filter.getCategory())) {
+                    filter.setCategory("");
                 }
             }
-            books = repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(),filter.getTitle(),filter.getAuthor());
-            return books;
+        }
+        books = repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(), filter.getTitle(), filter.getAuthor());
+        return books;
     }
 
     private boolean isStringCorrect(String strToVerify) {
-        if(strToVerify.isBlank() || strToVerify == null) {
+        if (strToVerify.isBlank() || strToVerify == null) {
             return false;
         }
         return true;

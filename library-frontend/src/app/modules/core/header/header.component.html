@@ -6,9 +6,8 @@
       <button mat-button routerLink="/">Strona główna</button>
       <button mat-button routerLink="/books">Książki</button>
       <button mat-button routerLink="/users">Użytkownicy</button>
-      <button mat-button routerLink="/about">O Bibliotece</button>
-      <button mat-button routerLink="/logowanie">Logowanie</button>
-      <button mat-button>Wyloguj się</button>
+      <button mat-button routerLink="/logowanie" *ngIf="!user">Logowanie</button>
+      <button mat-button (click)="logout()" *ngIf="user">Wyloguj się</button>
     </div>
   </mat-toolbar>
 </nav>

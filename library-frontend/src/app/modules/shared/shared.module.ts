@@ -2,16 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MaterialModule} from "./material/material.module";
 import {HttpClientModule} from "@angular/common/http";
+import {AlertComponent} from "./components/alert/alert.component";
+import {FormsModule} from "@angular/forms";
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [AlertComponent],
   imports: [
     CommonModule
   ],
   exports: [CommonModule,
     MaterialModule,
-    HttpClientModule]
+    HttpClientModule,
+    AlertComponent,
+    FormsModule]
 })
 export class SharedModule { }

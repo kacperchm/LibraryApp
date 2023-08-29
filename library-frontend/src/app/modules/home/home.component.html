@@ -1,1 +1,41 @@
-<p>home works!</p>
+<div class="centered-container">
+  <mat-card>
+    <mat-card-header>
+      <h1>O bibliotece</h1>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngFor="let paragraph of text">
+        <p class="p-text p-center">
+          {{paragraph}}
+        </p>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="centered-container">
+  <mat-card>
+    <mat-card-header>
+      <h1>Godziny otwarcia</h1>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngFor="let day of openingHours">
+        <p class="p-text opening-hours">
+          {{day}}
+        </p>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="centered-container">
+  <mat-card>
+    <mat-card-header style="justify-content: center">
+      <h1>Lokalizacja</h1>
+    </mat-card-header>
+    <mat-card-content class="iframe-container">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2561.810896253398!2d21.605360976533895!3d50.05237367151886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x473d06647b359b49%3A0xf0a59ff08c02a18a!2sMiejska%20i%20Powiatowa%20Biblioteka%20Publiczna!5e0!3m2!1spl!2spl!4v1693264825182!5m2!1spl!2spl"
+        width="400" height="250" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -3,7 +3,6 @@ package com.kacperchm.librarybackend.service;
 import com.kacperchm.librarybackend.InMemoryRepo.InMemoryAddressRepository;
 import com.kacperchm.librarybackend.InMemoryRepo.InMemoryUserRepository;
 import com.kacperchm.librarybackend.model.*;
-import com.kacperchm.librarybackend.model.dto.UserDto;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
@@ -36,10 +35,10 @@ public class UserServiceTest {
         usersRepository.save(user2);
 
         // when
-        UserDto userDto = service.getUserInfo(2L);
+        User userDto = service.getUserInfo(2L);
         // then
-        assertThat(userDto.getName()).isEqualTo("Krystian");
-        assertThat(userDto.getCity()).isEqualTo("Kraków");
+        assertThat(userDto.getLibraryMember().getName()).isEqualTo("Krystian");
+        assertThat(userDto.getAddress().getCity()).isEqualTo("Kraków");
         assertThat(userDto.getMail()).isEqualTo("cris111@gmail.com");
     }
 
@@ -467,9 +466,8 @@ public class UserServiceTest {
         addressesRepository.save(address2);
         LibraryMember member2 = new LibraryMember("Krystian", "Froń");
         List<Borrow> books = new ArrayList<>();
-        books.add(new Borrow(member2, new Book(1L,"Stephen King","To",2001,"Horror")));
-        member2.setBorrowedBookList(books);
-        member2.setNumOfBorrowedBooks(member2.getBorrowedBookList().size());
+        books.add(new Borrow(member2, new Book(1L, "Stephen King", "To", 2001, "Horror")));
+        member2.setNumOfBorrowedBooks(1);
         User user2 = new User(2L, "cris111", "cris111@gmail.com", "621874561", "cris", "ROLE_USER", address2, member2);
         usersRepository.save(user2);
         Long userId = 2L;

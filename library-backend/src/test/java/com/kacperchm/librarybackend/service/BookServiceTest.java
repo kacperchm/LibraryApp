@@ -2,7 +2,6 @@ package com.kacperchm.librarybackend.service;
 
 import com.kacperchm.librarybackend.InMemoryRepo.InMemoryBooksRepository;
 import com.kacperchm.librarybackend.model.Book;
-import com.kacperchm.librarybackend.model.dto.BookDto;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
@@ -20,7 +19,7 @@ public class BookServiceTest {
     @Test
     public void should_save_book_when_all_required_fields_are_correct_filled_in() {
         // given
-        BookDto book = new BookDto("Stephen King","Lśnienie",2009,"Horror");
+        Book book = new Book("Stephen King", "Lśnienie", 2009, "Horror");
         BookService bookService = new BookService(repository);
         // when
         BookResponse response = bookService.addBook(book);
@@ -34,7 +33,7 @@ public class BookServiceTest {
     @Test
     public void should_return_conflict_response_when_author_and_title_fields_are_not_filled_in_correct() {
         // given
-        BookDto book = new BookDto("","",2009,"Horror");
+        Book book = new Book("", "", 2009, "Horror");
         BookService bookService = new BookService(repository);
         // when
         BookResponse response = bookService.addBook(book);
@@ -46,7 +45,7 @@ public class BookServiceTest {
     @Test
     public void should_return_conflict_response_when_title_field_is_not_filled_in_correct() {
         // given
-        BookDto book = new BookDto("Stephen King","",2009,"Horror");
+        Book book = new Book("Stephen King", "", 2009, "Horror");
         BookService bookService = new BookService(repository);
         // when
         BookResponse response = bookService.addBook(book);
@@ -58,7 +57,7 @@ public class BookServiceTest {
     @Test
     public void should_delete_book_with_entered_id() {
         // given
-        Book book = new Book(1L,"Stephen King","Lśnienie",2009,"Horror");
+        Book book = new Book(1L, "Stephen King", "Lśnienie", 2009, "Horror");
         BookService bookService = new BookService(repository);
         repository.save(book);
         // when
@@ -74,12 +73,12 @@ public class BookServiceTest {
     public void should_return_all_books() {
         // given
         List<Book> bookListToAdd = new ArrayList<>();
-        bookListToAdd.add(new Book(0L,"Stephen King","Lśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(1L,"Stephen King","To",2001,"Horror"));
-        bookListToAdd.add(new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror"));
-        bookListToAdd.add(new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy"));
-        bookListToAdd.add(new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy"));
-        bookListToAdd.add(new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(1L, "Stephen King", "To", 2001, "Horror"));
+        bookListToAdd.add(new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror"));
+        bookListToAdd.add(new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy"));
+        bookListToAdd.add(new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy"));
+        bookListToAdd.add(new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy"));
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         // when
@@ -95,14 +94,14 @@ public class BookServiceTest {
     public void should_return_all_categories() {
         // given
         List<Book> bookListToAdd = new ArrayList<>();
-        bookListToAdd.add(new Book(0L,"Stephen King","Lśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(1L,"Stephen King","To",2001,"Horror"));
-        bookListToAdd.add(new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror"));
-        bookListToAdd.add(new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy"));
-        bookListToAdd.add(new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy"));
-        bookListToAdd.add(new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy"));
-        bookListToAdd.add(new Book(6L,"Nicholas Sparks","Najdłuższa podróż",2015,"Romans"));
-        bookListToAdd.add(new Book(7L,"Nicholas Sparks","Powrót",2013,"Romans"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(1L, "Stephen King", "To", 2001, "Horror"));
+        bookListToAdd.add(new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror"));
+        bookListToAdd.add(new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy"));
+        bookListToAdd.add(new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy"));
+        bookListToAdd.add(new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy"));
+        bookListToAdd.add(new Book(6L, "Nicholas Sparks", "Najdłuższa podróż", 2015, "Romans"));
+        bookListToAdd.add(new Book(7L, "Nicholas Sparks", "Powrót", 2013, "Romans"));
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         // when
@@ -118,15 +117,15 @@ public class BookServiceTest {
     public void should_return_list_of_books_filtered_by_title_author_and_category() {
         // given
         List<Book> bookListToAdd = new ArrayList<>();
-        bookListToAdd.add(new Book(0L,"Stephen King","Lśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(0L,"Stephen King","Olśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(1L,"Stephen King","To",2001,"Horror"));
-        bookListToAdd.add(new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror"));
-        bookListToAdd.add(new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy"));
-        bookListToAdd.add(new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy"));
-        bookListToAdd.add(new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy"));
-        bookListToAdd.add(new Book(6L,"Nicholas Sparks","Najdłuższa podróż",2015,"Romans"));
-        bookListToAdd.add(new Book(7L,"Nicholas Sparks","Powrót",2013,"Romans"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Olśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(1L, "Stephen King", "To", 2001, "Horror"));
+        bookListToAdd.add(new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror"));
+        bookListToAdd.add(new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy"));
+        bookListToAdd.add(new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy"));
+        bookListToAdd.add(new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy"));
+        bookListToAdd.add(new Book(6L, "Nicholas Sparks", "Najdłuższa podróż", 2015, "Romans"));
+        bookListToAdd.add(new Book(7L, "Nicholas Sparks", "Powrót", 2013, "Romans"));
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Horror", "King", "nie");
@@ -146,15 +145,15 @@ public class BookServiceTest {
     public void should_return_list_of_books_filtered_by_title_and_author() {
         // given
         List<Book> bookListToAdd = new ArrayList<>();
-        bookListToAdd.add(new Book(0L,"Stephen King","Lśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(0L,"Stephen King","Olśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(1L,"Stephen King","To",2001,"Horror"));
-        bookListToAdd.add(new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror"));
-        bookListToAdd.add(new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy"));
-        bookListToAdd.add(new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy"));
-        bookListToAdd.add(new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy"));
-        bookListToAdd.add(new Book(6L,"Nicholas Sparks","Najdłuższa podróż",2015,"Romans"));
-        bookListToAdd.add(new Book(7L,"Nicholas Sparks","Powrót",2013,"Romans"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Olśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(1L, "Stephen King", "To", 2001, "Horror"));
+        bookListToAdd.add(new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror"));
+        bookListToAdd.add(new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy"));
+        bookListToAdd.add(new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy"));
+        bookListToAdd.add(new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy"));
+        bookListToAdd.add(new Book(6L, "Nicholas Sparks", "Najdłuższa podróż", 2015, "Romans"));
+        bookListToAdd.add(new Book(7L, "Nicholas Sparks", "Powrót", 2013, "Romans"));
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("", "ling", "Potter");
@@ -177,15 +176,15 @@ public class BookServiceTest {
     public void should_return_list_of_books_filtered_by_category_and_author() {
         // given
         List<Book> bookListToAdd = new ArrayList<>();
-        bookListToAdd.add(new Book(0L,"Stephen King","Lśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(0L,"Stephen King","Olśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(1L,"Stephen King","To",2001,"Horror"));
-        bookListToAdd.add(new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror"));
-        bookListToAdd.add(new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy"));
-        bookListToAdd.add(new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy"));
-        bookListToAdd.add(new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy"));
-        bookListToAdd.add(new Book(6L,"Nicholas Sparks","Najdłuższa podróż",2015,"Romans"));
-        bookListToAdd.add(new Book(7L,"Nicholas Sparks","Powrót",2013,"Romans"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Olśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(1L, "Stephen King", "To", 2001, "Horror"));
+        bookListToAdd.add(new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror"));
+        bookListToAdd.add(new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy"));
+        bookListToAdd.add(new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy"));
+        bookListToAdd.add(new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy"));
+        bookListToAdd.add(new Book(6L, "Nicholas Sparks", "Najdłuższa podróż", 2015, "Romans"));
+        bookListToAdd.add(new Book(7L, "Nicholas Sparks", "Powrót", 2013, "Romans"));
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Romans", "par", "");
@@ -205,14 +204,14 @@ public class BookServiceTest {
     public void should_return_list_of_books_filtered_by_category() {
         // given
         List<Book> bookListToAdd = new ArrayList<>();
-        bookListToAdd.add(new Book(0L,"Stephen King","Lśnienie",2009,"Horror"));
-        bookListToAdd.add(new Book(1L,"Stephen King","To",2001,"Horror"));
-        bookListToAdd.add(new Book(2L,"Stephen King","Smentarz Zwierząt",2003,"Horror"));
-        bookListToAdd.add(new Book(3L,"J. K. Rowling","Harry Potter i Kamień Filozoficzny",1998,"Fantasy"));
-        bookListToAdd.add(new Book(4L,"J. K. Rowling","Harry Potter i Komnata Tajemnic",2000,"Fantasy"));
-        bookListToAdd.add(new Book(5L,"J. K. Rowling","Harry Potter i Więzień Askabanu",2003,"Fantasy"));
-        bookListToAdd.add(new Book(6L,"Nicholas Sparks","Najdłuższa podróż",2015,"Romans"));
-        bookListToAdd.add(new Book(7L,"Nicholas Sparks","Powrót",2013,"Romans"));
+        bookListToAdd.add(new Book(0L, "Stephen King", "Lśnienie", 2009, "Horror"));
+        bookListToAdd.add(new Book(1L, "Stephen King", "To", 2001, "Horror"));
+        bookListToAdd.add(new Book(2L, "Stephen King", "Smentarz Zwierząt", 2003, "Horror"));
+        bookListToAdd.add(new Book(3L, "J. K. Rowling", "Harry Potter i Kamień Filozoficzny", 1998, "Fantasy"));
+        bookListToAdd.add(new Book(4L, "J. K. Rowling", "Harry Potter i Komnata Tajemnic", 2000, "Fantasy"));
+        bookListToAdd.add(new Book(5L, "J. K. Rowling", "Harry Potter i Więzień Askabanu", 2003, "Fantasy"));
+        bookListToAdd.add(new Book(6L, "Nicholas Sparks", "Najdłuższa podróż", 2015, "Romans"));
+        bookListToAdd.add(new Book(7L, "Nicholas Sparks", "Powrót", 2013, "Romans"));
         BookService bookService = new BookService(repository);
         repository.saveAll(bookListToAdd);
         BookFilter filter = new BookFilter("Horror", "", "");

@@ -1,0 +1,73 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "chmuraka98",
+      "mail": "chmuraka98@gmail.com",
+      "phoneNumber": "666888777",
+      "password": "haslo123",
+      "role": "ROLE_USER",
+      "address": {
+        "id": 1,
+        "city": "Ropczyce",
+        "zipCode": "39-100",
+        "street": "Południowa",
+        "houseNumber": "39/6"
+      },
+      "libraryMember": {
+        "id": 1,
+        "name": "Kacper",
+        "surname": "Waza",
+        "numOfBorrowedBooks": 0,
+        "blockade": false,
+        "borrowList": []
+      }
+    },
+    {
+      "id": 2,
+      "username": "pati98",
+      "mail": "pati98@gmail.com",
+      "phoneNumber": "666999777",
+      "password": "haslo123",
+      "role": "ROLE_USER",
+      "address": {
+        "id": 2,
+        "city": "Ropczyce",
+        "zipCode": "39-100",
+        "street": "Północna",
+        "houseNumber": "42C"
+      },
+      "libraryMember": {
+        "id": 2,
+        "name": "Patrycja",
+        "surname": "Koc",
+        "numOfBorrowedBooks": 0,
+        "blockade": false,
+        "borrowList": []
+      }
+    },
+    {
+      "id": 3,
+      "username": "admin",
+      "mail": "admin@gmail.com",
+      "phoneNumber": "111888777",
+      "password": "haslo123",
+      "role": "ROLE_ADMIN",
+      "address": {
+        "id": 3,
+        "city": "Ropczyce",
+        "zipCode": "39-100",
+        "street": "Topolowa",
+        "houseNumber": "123"
+      },
+      "libraryMember": {
+        "id": 3,
+        "name": "Anna",
+        "surname": "Sado",
+        "numOfBorrowedBooks": 0,
+        "blockade": false,
+        "borrowList": []
+      }
+    }
+  ]
+}
