@@ -1,13 +1,11 @@
 package com.kacperchm.librarybackend.controller;
 
 import com.kacperchm.librarybackend.model.LoginCredential;
-import com.kacperchm.librarybackend.model.dto.UserDto;
-import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.service.LoginAndRegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,14 +20,14 @@ public class LoginAndRegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDto user) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         RegistrationResponse registrationResponse = service.registerUser(user);
         return ResponseEntity
                 .status(registrationResponse.getStatus())
                 .body(registrationResponse.getMessage());
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginCredential credential) {
         ResponseEntity<User> response;
         if(service.loginUser(credential) != null) {

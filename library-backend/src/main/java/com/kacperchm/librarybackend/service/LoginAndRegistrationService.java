@@ -1,10 +1,8 @@
 package com.kacperchm.librarybackend.service;
 
-import com.kacperchm.librarybackend.mapper.UserMapper;
 import com.kacperchm.librarybackend.model.LoginCredential;
-import com.kacperchm.librarybackend.model.dto.UserDto;
-import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
 import com.kacperchm.librarybackend.repository.MembersRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
@@ -29,25 +27,28 @@ public class LoginAndRegistrationService {
 
     public User loginUser(LoginCredential credential) {
         User user = null;
-        if(usersRepository.existsByMail(credential.getEmail())) {
+        if (usersRepository.existsByMail(credential.getEmail())) {
             user = usersRepository.findByMail(credential.getEmail()).get(0);
+            boolean samePassword = user.getPassword().equals(credential.getPassword());
+            if(!samePassword){
+                user = null;
+            }
         }
         return user;
     }
 
-    public RegistrationResponse registerUser(UserDto dto) {
-        User user = UserMapper.mapToUser(dto);
+    public RegistrationResponse registerUser(User user) {
         try {
             if (areDataUnique(user)) {
                 usersRepository.save(user);
                 addressesRepository.save(user.getAddress());
                 membersRepository.save(user.getLibraryMember());
-                return new RegistrationResponse("User create successfully",HttpStatus.CREATED);
+                return new RegistrationResponse("User create successfully", HttpStatus.CREATED);
             }
         } catch (Exception e) {
             return new RegistrationResponse("Failed to create user. Server-side error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new RegistrationResponse(getWrongMessage(user),HttpStatus.CONFLICT);
+        return new RegistrationResponse(getWrongMessage(user), HttpStatus.CONFLICT);
     }
 
     public String getWrongMessage(User user) {
@@ -55,14 +56,17 @@ public class LoginAndRegistrationService {
         String message;
         switch (wrongData.size()) {
             case 1: {
-                message = String.format("User with this %s already exists",wrongData.get(0));
-            } break;
+                message = String.format("User with this %s already exists", wrongData.get(0));
+            }
+            break;
             case 2: {
-                message = String.format("User with this %s and %s already exists",wrongData.get(0),wrongData.get(1));
-            } break;
+                message = String.format("User with this %s and %s already exists", wrongData.get(0), wrongData.get(1));
+            }
+            break;
             case 3: {
-                message = String.format("User with this %s, %s and %s already exists",wrongData.get(0), wrongData.get(1) ,wrongData.get(2));
-            } break;
+                message = String.format("User with this %s, %s and %s already exists", wrongData.get(0), wrongData.get(1), wrongData.get(2));
+            }
+            break;
             default:
                 message = null;
         }
@@ -70,9 +74,9 @@ public class LoginAndRegistrationService {
     }
 
     private boolean areDataUnique(User user) {
-        boolean usernameExist = usersRepository.existsByUsername(user.getUsername());
-        boolean mailExist = usersRepository.existsByMail(user.getMail());
-        boolean numberExist = usersRepository.existsByPhoneNumber(user.getPhoneNumber());
+        boolean usernameExist = !usersRepository.existsByUsername(user.getUsername());
+        boolean mailExist = !usersRepository.existsByMail(user.getMail());
+        boolean numberExist = !usersRepository.existsByPhoneNumber(user.getPhoneNumber());
         if (usernameExist && mailExist && numberExist) {
             return true;
         }
@@ -84,10 +88,10 @@ public class LoginAndRegistrationService {
         if (usersRepository.existsByUsername(user.getUsername())) {
             wrongData.add("username");
         }
-        if (usersRepository.existsByMail(user.getMail())){
+        if (usersRepository.existsByMail(user.getMail())) {
             wrongData.add("mail");
         }
-        if (usersRepository.existsByPhoneNumber(user.getPhoneNumber())){
+        if (usersRepository.existsByPhoneNumber(user.getPhoneNumber())) {
             wrongData.add("phone number");
         }
         return wrongData;
