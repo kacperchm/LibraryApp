@@ -1,4 +1,4 @@
-import {Address, } from "./address.model";
+import {Address} from "./address.model";
 import {LibraryMember} from "./library-member.model";
 
 
@@ -20,10 +20,25 @@ export interface UserLoginData {
 
 export class User {
   constructor(id: number,
-  username: string,
-  mail: string,
-  phoneNumber: string,
-  password: string,
-  role: string) {
+              username: string,
+              mail: string,
+              phoneNumber: string,
+              password: string,
+              role: string) {
+  }
+}
+
+export class RegisterUser {
+  constructor(username: string,
+              mail: string,
+              phoneNumber: string,
+              password: string,
+              city: string,
+              zipCode: string,
+              street: string,
+              houseNumber: string,
+              name: string,
+              surname: string
+              ) {
   }
 }

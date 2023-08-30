@@ -1,1 +1,92 @@
-<p>register works!</p>
+<div class="register-wrapper mt-3">
+  <h2>Zarejestruj się:</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <div class="columns">
+      <div class="column">
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Imię</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="controls.name.invalid">{{getErrorMessage(controls.name)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Nazwisko</mat-label>
+            <input matInput formControlName="surname">
+            <mat-error *ngIf="controls.surname.invalid">{{getErrorMessage(controls.surname)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Login</mat-label>
+            <input matInput formControlName="username">
+            <mat-error *ngIf="controls.username.invalid">{{getErrorMessage(controls.username)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>E-mail</mat-label>
+            <input matInput placeholder="test@gmail.com" formControlName="mail">
+            <mat-error *ngIf="controls.mail.invalid">{{getErrorMessage(controls.mail)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Telefon</mat-label>
+            <input matInput formControlName="phoneNumber">
+            <mat-error *ngIf="controls.phoneNumber.invalid">{{getErrorMessage(controls.phoneNumber)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Hasło</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+            <mat-error *ngIf="controls.password.invalid">{{getErrorMessage(controls.password)}}</mat-error>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="column">
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Miasto</mat-label>
+            <input matInput formControlName="city">
+            <mat-error *ngIf="controls.city.invalid">{{getErrorMessage(controls.city)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Kod Pocztowy</mat-label>
+            <input matInput placeholder="XX-XXX" formControlName="zipCode">
+            <mat-error *ngIf="controls.zipCode.invalid">{{getErrorMessage(controls.zipCode)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Ulica</mat-label>
+            <input matInput formControlName="street">
+            <mat-error *ngIf="controls.street.invalid">{{getErrorMessage(controls.street)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Nr Domu</mat-label>
+            <input matInput formControlName="houseNumber">
+            <mat-error *ngIf="controls.houseNumber.invalid">{{getErrorMessage(controls.houseNumber)}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end center-div">
+      <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Zarejestruj się</button>
+    </div>
+  </form>
+  <div class="center-div">
+    <app-alert *ngIf="errorMessage" [text]="errorMessage"></app-alert>
+  </div>
+
+</div>

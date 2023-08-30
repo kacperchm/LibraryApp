@@ -3,7 +3,7 @@ import {environment} from "../../../../environments/environment.development";
 import {BehaviorSubject, Observable, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {User, UserLoginData} from "../models/user.model";
+import {RegisterUser, User, UserLoginData} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +28,10 @@ export class AuthService {
     );
   }
 
- /* register(userData: PostUser): Observable<PostUserResponse> {
-    return this.http.post<PostUserResponse>(`${this.apiUrl}/users`, userData);
-  }*/
+  register(registerUser: RegisterUser): Observable<User> {
+    console.log(registerUser)
+    return this.http.post<User>(`${this.apiUrl}/register`, registerUser);
+  }
 
   logout() {
     this.user.next(null);

@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  isAdmin: boolean = false;
   user: User | null = null;
   sub!: Subscription;
   constructor(private authService: AuthService) {}
@@ -17,12 +18,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.sub = this.authService.user.subscribe({
       next: (value) => {
         this.user = value;
+        if(value?.role === 'ROLE_ADMIN'){
+          this.isAdmin = true;
+        }
       },
     });
   }
 
   logout() {
     this.authService.logout();
+    this.isAdmin = false;
   }
 
   ngOnDestroy(): void {

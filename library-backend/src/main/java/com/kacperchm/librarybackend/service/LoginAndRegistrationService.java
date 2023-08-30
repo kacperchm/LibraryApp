@@ -1,7 +1,6 @@
 package com.kacperchm.librarybackend.service;
 
-import com.kacperchm.librarybackend.model.LoginCredential;
-import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.model.*;
 import com.kacperchm.librarybackend.model.responses.RegistrationResponse;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
 import com.kacperchm.librarybackend.repository.MembersRepository;
@@ -30,25 +29,29 @@ public class LoginAndRegistrationService {
         if (usersRepository.existsByMail(credential.getEmail())) {
             user = usersRepository.findByMail(credential.getEmail()).get(0);
             boolean samePassword = user.getPassword().equals(credential.getPassword());
-            if(!samePassword){
+            if (!samePassword) {
                 user = null;
             }
         }
         return user;
     }
 
-    public RegistrationResponse registerUser(User user) {
+    public User registerUser(RegisterUser registerUser) {
+        User user = new User(registerUser.getUsername(), registerUser.getMail(), registerUser.getPhoneNumber(),
+                registerUser.getPassword(), "ROLE_USER",
+                new Address(registerUser.getCity(), registerUser.getZipCode(), registerUser.getStreet(),
+                        registerUser.getHouseNumber()), new LibraryMember(registerUser.getName(), registerUser.getSurname()));
         try {
             if (areDataUnique(user)) {
-                usersRepository.save(user);
+                User createdUser = usersRepository.save(user);
                 addressesRepository.save(user.getAddress());
                 membersRepository.save(user.getLibraryMember());
-                return new RegistrationResponse("User create successfully", HttpStatus.CREATED);
+                return createdUser;
             }
         } catch (Exception e) {
-            return new RegistrationResponse("Failed to create user. Server-side error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return null;
         }
-        return new RegistrationResponse(getWrongMessage(user), HttpStatus.CONFLICT);
+        return new User();
     }
 
     public String getWrongMessage(User user) {
@@ -74,10 +77,10 @@ public class LoginAndRegistrationService {
     }
 
     private boolean areDataUnique(User user) {
-        boolean usernameExist = !usersRepository.existsByUsername(user.getUsername());
-        boolean mailExist = !usersRepository.existsByMail(user.getMail());
-        boolean numberExist = !usersRepository.existsByPhoneNumber(user.getPhoneNumber());
-        if (usernameExist && mailExist && numberExist) {
+        boolean usernameExist = usersRepository.existsByUsername(user.getUsername());
+        boolean mailExist = usersRepository.existsByMail(user.getMail());
+        boolean numberExist = usersRepository.existsByPhoneNumber(user.getPhoneNumber());
+        if (!usernameExist && !mailExist && !numberExist) {
             return true;
         }
         return false;

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {MaterialModule} from "./material/material.module";
 import {HttpClientModule} from "@angular/common/http";
 import {AlertComponent} from "./components/alert/alert.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -16,6 +16,7 @@ import {FormsModule} from "@angular/forms";
     MaterialModule,
     HttpClientModule,
     AlertComponent,
-    FormsModule]
+    FormsModule,
+  ReactiveFormsModule]
 })
 export class SharedModule { }

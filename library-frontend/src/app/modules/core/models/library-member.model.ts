@@ -1,11 +1,17 @@
-import {Borrow} from "./borrow.model";
-
 export interface LibraryMember {
   id: number;
   name: string;
   surname: string;
   numOfBorrowedBooks: number;
   blockade: boolean;
-  borrowList: Borrow[];
+}
+
+export class LibraryMember {
+  constructor(id: number,
+              name: string,
+              surname: string,
+              numOfBorrowedBooks: number,
+              blockade: boolean) {
+  }
 }
 
