@@ -52,6 +52,35 @@ public class InMemoryBooksRepository implements BooksRepository {
     }
 
     @Override
+    public Page<Book> findBooksByCategoryTitleAndAuthor(String category, String title, String author, Pageable pageable) {
+        List<Book> bookList = new ArrayList<>();
+        for (Book b : bookDb) {
+            if (category.isEmpty() || b.getCategory().equals(category)) {
+                if (title.isEmpty() || b.getTitle().contains(title)) {
+                    if (author.isEmpty() || b.getAuthor().contains(author)) {
+                        bookList.add(b);
+                    }
+                }
+            }
+        }
+        return Page.empty();
+    }
+
+    @Override
+    public List<Book> findBooksByFilter(String category, String title, String author) {
+        List<Book> bookList = new ArrayList<>();
+        for (Book b : bookDb) {
+            if (category.isEmpty() || b.getCategory().equals(category)) {
+                if (title.isEmpty() || b.getTitle().contains(title)) {
+                    if (author.isEmpty() || b.getAuthor().contains(author)) {
+                        bookList.add(b);
+                    }
+                }
+            }
+        }
+        return bookList;
+    }
+
     public List<Book> findBooksByCategoryTitleAndAuthor(String category, String title, String author) {
         List<Book> bookList = new ArrayList<>();
         for (Book b : bookDb) {

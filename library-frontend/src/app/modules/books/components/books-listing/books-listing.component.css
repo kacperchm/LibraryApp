@@ -1,0 +1,29 @@
+section {
+  min-width: 1200px;
+}
+
+mat-form-field {
+  width: 30%;
+}
+
+.green-circle {
+  width: 20px;
+  height: 20px;
+  background-color: green;
+  border-radius: 50%;
+}
+
+.red-circle {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.center-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+

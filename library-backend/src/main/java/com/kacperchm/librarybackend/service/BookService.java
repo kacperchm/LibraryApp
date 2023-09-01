@@ -4,6 +4,10 @@ import com.kacperchm.librarybackend.model.Book;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.responses.BookResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -102,9 +106,22 @@ public class BookService {
         return new BookResponse(message, HttpStatus.OK);
     }
 
-    public List<Book> getAllBooks() {
+    public int getQuantityOfBooks() {
         List<Book> books = repository.findAll();
-        return books;
+        return books.size();
+    }
+
+    public List<Book> getAllBooks(int page, int limit, String sort, String order) {
+        sort = sort.toUpperCase();
+        Sort.Direction direction;
+        if (sort.equals("ASC")) {
+            direction = Sort.Direction.ASC;
+        } else {
+            direction = Sort.Direction.DESC;
+        }
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, order));
+        Page<Book> books = repository.findAll(pageable);
+        return books.getContent();
     }
 
     public Book getBook(long id) {
@@ -117,6 +134,7 @@ public class BookService {
 
     public List<String> getAllCategories() {
         Set<String> allCategories = new TreeSet<>();
+        allCategories.add("All");
         List<Book> books = repository.findAll();
         for (Book b : books) {
             allCategories.add(b.getCategory());
@@ -124,8 +142,8 @@ public class BookService {
         return allCategories.stream().toList();
     }
 
-    public List<Book> getFilteredBooks(BookFilter filter) {
-        List<Book> books;
+    public List<Book> getFilteredBooks(int page, int limit, String sort, String order, BookFilter filter) {
+        Page<Book> books;
         if (!isStringCorrect(filter.getTitle())) {
             filter.setTitle("");
             if (!isStringCorrect(filter.getAuthor())) {
@@ -135,8 +153,40 @@ public class BookService {
                 }
             }
         }
-        books = repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(), filter.getTitle(), filter.getAuthor());
-        return books;
+
+        sort = sort.toUpperCase();
+        Sort.Direction direction;
+        if (sort.equals("ASC")) {
+            direction = Sort.Direction.ASC;
+        } else {
+            direction = Sort.Direction.DESC;
+        }
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, order));
+
+        if (filter.getCategory().equals("All") && !filter.getAuthor().equals("")) {
+            books = repository.findBooksByTitleAndAuthor(filter.getTitle(), filter.getAuthor(), pageable);
+        } else if (!filter.getCategory().equals("All") && filter.getAuthor().equals("")) {
+            books = repository.findBooksByCategory(filter.getCategory(), pageable);
+        } else if (filter.getCategory().equals("All") && filter.getAuthor().equals("")) {
+            books = repository.findAll(pageable);
+        } else {
+            books = repository.findBooksByCategoryTitleAndAuthor(filter.getCategory(), filter.getTitle(), filter.getAuthor(), pageable);
+        }
+        return books.getContent();
+    }
+
+    public int getQuantityOfFilteredBooks(BookFilter filter) {
+        List<Book> books;
+        if (filter.getCategory().equals("All") && !filter.getAuthor().equals("")) {
+            books = repository.findBooksByFilterWithoutCategory(filter.getTitle(), filter.getAuthor());
+        } else if (!filter.getCategory().equals("All") && filter.getAuthor().equals("")) {
+            books = repository.findBooksByFilterWithoutAuthorAndTitle(filter.getCategory());
+        } else if (filter.getCategory().equals("All") && filter.getAuthor().equals("")) {
+            books = repository.findAll();
+        } else {
+            books = repository.findBooksByFilter(filter.getCategory(), filter.getTitle(), filter.getAuthor());
+        }
+        return books.size();
     }
 
     private boolean isStringCorrect(String strToVerify) {
