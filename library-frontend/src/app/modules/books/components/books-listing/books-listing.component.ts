@@ -60,7 +60,7 @@ export class BooksListingComponent implements AfterViewInit, OnDestroy, OnInit {
             const sortDirection = this.sort.direction;
             const sortColumnName = this.sort.active;
 
-            if(this.selectedCategoryControl.value !== '' && this.filterValue.value !== '') {
+            if(this.selectedCategoryControl.value !== '' || this.filterValue.value !== '') {
               return this.booksService.getFilteredBooks(
                 pageIndex,
                 itemsPerPage,
@@ -68,8 +68,6 @@ export class BooksListingComponent implements AfterViewInit, OnDestroy, OnInit {
                 sortColumnName,
                 this.filterValue.value,
                 this.selectedCategoryControl.value)
-
-
             } else {
               return this.booksService.getBooks(
                 pageIndex,
