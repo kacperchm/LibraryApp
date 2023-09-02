@@ -1,0 +1,13 @@
+section {
+  min-width: 1200px;
+}
+
+mat-form-field {
+  width: 30%;
+}
+
+.center-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

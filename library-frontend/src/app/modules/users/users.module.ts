@@ -5,6 +5,7 @@ import { UsersRoutingModule } from './users-routing.module';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { UsersListingComponent } from './components/users-listing/users-listing.component';
 import { BorrowsComponent } from '../borrows/borrows.component';
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { BorrowsComponent } from '../borrows/borrows.component';
   ],
   imports: [
     CommonModule,
-    UsersRoutingModule
+    UsersRoutingModule,
+    SharedModule
   ]
 })
 export class UsersModule { }

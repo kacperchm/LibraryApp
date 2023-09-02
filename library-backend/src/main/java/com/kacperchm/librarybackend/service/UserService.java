@@ -1,12 +1,21 @@
 package com.kacperchm.librarybackend.service;
 
+import com.kacperchm.librarybackend.mapper.UserMapper;
 import com.kacperchm.librarybackend.model.Address;
+import com.kacperchm.librarybackend.model.Book;
 import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.model.UserToTransfer;
+import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,13 +37,30 @@ public class UserService {
         return user;
     }
 
-    public List<User> getAllUsersInfo() {
-        List<User> users = usersRepository.findAll();
-        return users;
+    public List<UserToTransfer> getAllUsersInfo(int page, int limit, String sort, String order) {
+        sort = sort.toUpperCase();
+        Sort.Direction direction;
+        if (sort.equals("ASC")) {
+            direction = Sort.Direction.ASC;
+        } else {
+            direction = Sort.Direction.DESC;
+        }
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, order));
+        Page<User> users = usersRepository.findAll(pageable);
+        List<UserToTransfer> usersList = new ArrayList<>();
+        for (User usersToChange : users.getContent()) {
+            usersList.add(UserMapper.mapToUserToTransfer(usersToChange));
+        }
+        return usersList;
     }
 
-    public List<User> getAllFilteredUsersInfo(UserFilter filter) {
-        List<User> users;
+    public int getQuantityOfUsers() {
+        List<User> users = usersRepository.findAll();
+        return users.size();
+    }
+
+    public List<UserToTransfer> getAllFilteredUsersInfo(int page, int limit, String sort, String order,UserFilter filter) {
+        Page<User> users;
         if (!isStringCorrect(filter.getUsername())) {
             filter.setUsername("");
             if (!isStringCorrect(filter.getPhoneNumber())) {
@@ -44,8 +70,29 @@ public class UserService {
                 }
             }
         }
-        users = usersRepository.findUsersByUsernamePhoneNumberAndMail(filter.getUsername(), filter.getPhoneNumber(), filter.getMail());
-        return users;
+
+        sort = sort.toUpperCase();
+        Sort.Direction direction;
+        if (sort.equals("ASC")) {
+            direction = Sort.Direction.ASC;
+        } else {
+            direction = Sort.Direction.DESC;
+        }
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, order));
+
+        users = usersRepository.findUsersByUsernamePhoneNumberAndMail(filter.getUsername(), filter.getPhoneNumber(), filter.getMail(), pageable);
+
+        List<UserToTransfer> usersList = new ArrayList<>();
+        for (User usersToChange : users.getContent()) {
+            usersList.add(UserMapper.mapToUserToTransfer(usersToChange));
+        }
+        return usersList;
+    }
+
+    public int getQuantityOfFilteredUsers(UserFilter filter) {
+        List<User> users;
+        users = usersRepository.findUsersByFilter(filter.getUsername(), filter.getPhoneNumber(), filter.getMail());
+        return users.size();
     }
 
     public String changePhoneNumber(Long userId, String newNumber) {

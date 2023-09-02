@@ -2,6 +2,8 @@ package com.kacperchm.librarybackend.controller;
 
 import com.kacperchm.librarybackend.model.Address;
 import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.model.UserToTransfer;
+import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private UserService service;
@@ -31,25 +33,48 @@ public class UserController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<List<User>> getUsersDetails() {
-        List<User> users = service.getAllUsersInfo();
+    public ResponseEntity<List<UserToTransfer>> getUsersDetails(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int limit,
+            @RequestParam(defaultValue = "ASC") String sort,
+            @RequestParam(defaultValue = "username") String order) {
+        List<UserToTransfer> users = service.getAllUsersInfo(page, limit, sort, order);
         if (users.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
+    @GetMapping("/size")
+    public ResponseEntity<Integer> getQuantityOfBooks() {
+        int size = service.getQuantityOfUsers();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(size);
+    }
+
     @GetMapping("/filtered-details")
-    public ResponseEntity<List<User>> getUsersDetailsFiltered(
-            @RequestParam(value = "username", required = false) String username,
-            @RequestParam(value = "mail", required = false) String mail,
-            @RequestParam(value = "phoneNumber", required = false) String phoneNumber) {
-        UserFilter filter = new UserFilter(username, mail, phoneNumber);
-        List<User> users = service.getAllFilteredUsersInfo(filter);
+    public ResponseEntity<List<UserToTransfer>> getUsersDetailsFiltered(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int limit,
+            @RequestParam(defaultValue = "ASC") String sort,
+            @RequestParam(defaultValue = "username") String order,
+            @RequestParam(defaultValue = "") String filter) {
+        UserFilter userFilter = new UserFilter(filter, filter, filter);
+        List<UserToTransfer> users = service.getAllFilteredUsersInfo(page, limit, sort, order, userFilter);
         if (users.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
+    @GetMapping("/size-filtered")
+    public ResponseEntity<Integer> getQuantityOfFilteredBooks(
+            @RequestParam String filter,
+            @RequestParam String category
+    ) {
+        int size = service.getQuantityOfFilteredUsers(new UserFilter(category, filter, filter));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(size);
     }
 
     @PostMapping("/change-number/{id}")

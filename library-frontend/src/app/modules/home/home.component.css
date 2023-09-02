@@ -15,11 +15,11 @@ h1 {
 }
 
 .centered-container {
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 }
 
 .opening-hours {

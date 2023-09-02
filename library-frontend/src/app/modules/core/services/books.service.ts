@@ -27,7 +27,6 @@ export class BooksService {
     itemPerPage: number,
     sortDirection: string,
     sortColumnName: string,
-    value = '',
   ): Observable<GetBooksResponse> {
     let params = new HttpParams()
       .append('page', pageIndex)
@@ -111,7 +110,7 @@ export class BooksService {
         map((response) => {
           if (!response.body) return {books: [], totalCount: 0};
 
-          const clientsArr: Book[] = response.body.map(
+          const arr: Book[] = response.body.map(
             ({id, author, title, publicationYear, category, availability}) =>
               new Book(
                 id,
@@ -124,7 +123,7 @@ export class BooksService {
           );
 
           const totalCount = Number(response.headers.get("X-Total-Count"));
-          return {books: clientsArr, totalCount: totalCount};
+          return {books: arr, totalCount: totalCount};
         }),
       );
   }

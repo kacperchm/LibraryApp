@@ -13,6 +13,25 @@ export interface User {
   libraryMember: LibraryMember;
 }
 
+export interface UserResponse {
+  id: number;
+  username: string;
+  mail: string;
+  phoneNumber: string;
+  password: string;
+  role: string;
+  addressId: number;
+  city: string;
+  zipCode: string;
+  street: string;
+  houseNumber: string;
+  memberId: number;
+  name: string;
+  surname: string;
+  numOfBorrowedBooks: number;
+  blockade: boolean;
+}
+
 export interface UserLoginData {
   email: string;
   password: string;
@@ -39,6 +58,31 @@ export class RegisterUser {
               houseNumber: string,
               name: string,
               surname: string
-              ) {
+  ) {
   }
+}
+
+export class UserDetails {
+  constructor(id: number,
+              username: string,
+              mail: string,
+              phoneNumber: string,
+              password: string,
+              role: string,
+              addressId: number,
+              city: string,
+              zipCode: string,
+              street: string,
+              houseNumber: string,
+              memberId: number,
+              name: string,
+              surname: string,
+              numOfBorrowedBooks: number,
+              blockade: boolean) {
+  }
+}
+
+export interface GetUsersResponse {
+  users: UserDetails[];
+  totalCount: number;
 }
