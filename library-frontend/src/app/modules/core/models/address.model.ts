@@ -1,3 +1,5 @@
+import {FormControl} from "@angular/forms";
+
 export interface Address {
   id: number;
   city: string;
@@ -13,4 +15,11 @@ export class Address {
               street: string,
               houseNumber: string) {
   }
+}
+
+export interface PostAddressForm {
+  city: FormControl<string>,
+  zipCode: FormControl<string>,
+  street: FormControl<string>,
+  houseNumber: FormControl<string>
 }

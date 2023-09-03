@@ -18,6 +18,9 @@ public class UserToTransfer {
     private int numOfBorrowedBooks;
     private boolean blockade;
 
+    public UserToTransfer() {
+    }
+
     public UserToTransfer(Long id, String username, String mail, String phoneNumber, String password, String role, Long addressId, String city, String zipCode, String street, String houseNumber, Long memberId, String name, String surname, int numOfBorrowedBooks, boolean blockade) {
         this.id = id;
         this.username = username;

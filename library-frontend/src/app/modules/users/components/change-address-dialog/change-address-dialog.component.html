@@ -1,0 +1,38 @@
+<mat-dialog-content>
+  <h2>Zmień Adres:</h2>
+  <form [formGroup]="addressForm" (ngSubmit)="onChangeAddress()">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Miasto</mat-label>
+        <input matInput formControlName = "city">
+        <mat-error *ngIf="controls.city.invalid">{{getErrorMessage(controls.city)}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Kod Pocztowy</mat-label>
+        <input matInput formControlName="zipCode">
+        <mat-error *ngIf="controls.zipCode.invalid">{{getErrorMessage(controls.zipCode)}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Ulica</mat-label>
+        <input matInput formControlName="street">
+        <mat-error *ngIf="controls.street.invalid">{{getErrorMessage(controls.street)}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Numer Domu</mat-label>
+        <input matInput formControlName="houseNumber">
+        <mat-error *ngIf="controls.houseNumber.invalid">{{getErrorMessage(controls.houseNumber)}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button mat-raised-button color="warn" (click)="closeDialog()" type="button">Anuluj</button>
+      <button mat-raised-button color="primary" type="submit" class="mx-1" [disabled]="addressForm.invalid">Zmień Adres</button>
+    </div>
+    <app-alert *ngIf="errorMessage" [text]="errorMessage"></app-alert>
+  </form>
+</mat-dialog-content>

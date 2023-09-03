@@ -34,7 +34,8 @@ import {MatDividerModule} from "@angular/material/divider";
     A11yModule,
     MatListModule,
     MatSelectModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule
   ]
 })
 export class MaterialModule { }

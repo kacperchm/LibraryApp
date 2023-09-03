@@ -3,6 +3,12 @@ import {UserDetails} from "../../../core/models/user.model";
 import {UsersService} from "../../../core/services/users.service";
 import {ActivatedRoute} from "@angular/router";
 import {switchMap} from "rxjs";
+import {MatDialog} from "@angular/material/dialog";
+import {ChangePasswordDialogComponent} from "../change-password-dialog/change-password-dialog.component";
+import {ChangeNumberDialogComponent} from "../change-number-dialog/change-number-dialog.component";
+import {ChangeRoleDialogComponent} from "../change-role-dialog/change-role-dialog.component";
+import {ChangeAddressDialogComponent} from "../change-address-dialog/change-address-dialog.component";
+import {DeleteUserDialogComponent} from "../delete-user-dialog/delete-user-dialog.component";
 
 @Component({
   selector: 'app-user-details',
@@ -33,6 +39,7 @@ export class UserDetailsComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private route: ActivatedRoute,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +67,60 @@ export class UserDetailsComponent implements OnInit {
           this.blockade = u.blockade;
         },
       });
+  }
+
+  openChangePassword() {
+    const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
+      data: {
+        userId: this.id,
+      },
+      width: '600px',
+      maxWidth: '600px',
+    });
+  }
+
+  openChangePhoneNumber() {
+    const dialogRef = this.dialog.open(ChangeNumberDialogComponent, {
+      data: {
+        userId: this.id,
+      },
+      width: '600px',
+      maxWidth: '600px',
+    });
+  }
+
+  changeRole() {
+    const dialogRef = this.dialog.open(ChangeRoleDialogComponent, {
+      data: {
+        userId: this.id,
+      },
+      width: '600px',
+      maxWidth: '600px',
+    });
+  }
+
+  openChangeAddress() {
+    const dialogRef = this.dialog.open(ChangeAddressDialogComponent, {
+      data: {
+        userId: this.id,
+        addressId: this.addressId,
+        city: this.city,
+        zipCode: this.zipCode,
+        street: this.street,
+        houseNumber: this.houseNumber,
+      },
+      width: '600px',
+      maxWidth: '600px',
+    });
+  }
+
+  deleteUser() {
+    const dialogRef = this.dialog.open(DeleteUserDialogComponent, {
+      data: {
+        userId: this.id,
+      },
+      width: '600px',
+      maxWidth: '600px',
+    });
   }
 }

@@ -1,5 +1,6 @@
 import {Address} from "./address.model";
 import {LibraryMember} from "./library-member.model";
+import {FormControl} from "@angular/forms";
 
 
 export interface User {
@@ -85,4 +86,22 @@ export class UserDetails {
 export interface GetUsersResponse {
   users: UserDetails[];
   totalCount: number;
+}
+
+export interface PostPasswordForm {
+  oldPassword: FormControl<string>;
+  newPassword: FormControl<string>;
+}
+
+export interface PostNumberForm {
+  phoneNumber: FormControl<string>;
+}
+
+export interface PostRoleForm {
+  role: FormControl<string>;
+}
+
+export interface Role {
+  value: string;
+  viewValue: string;
 }

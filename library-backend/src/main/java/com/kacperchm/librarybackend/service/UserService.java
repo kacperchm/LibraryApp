@@ -4,6 +4,7 @@ import com.kacperchm.librarybackend.mapper.UserMapper;
 import com.kacperchm.librarybackend.model.*;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
+import com.kacperchm.librarybackend.repository.MembersRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -21,10 +22,12 @@ public class UserService {
 
     private UsersRepository usersRepository;
     private AddressesRepository addressesRepository;
+    private MembersRepository membersRepository;
 
-    public UserService(UsersRepository usersRepository, AddressesRepository addressesRepository) {
+    public UserService(UsersRepository usersRepository, AddressesRepository addressesRepository, MembersRepository membersRepository) {
         this.usersRepository = usersRepository;
         this.addressesRepository = addressesRepository;
+        this.membersRepository = membersRepository;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -100,75 +103,82 @@ public class UserService {
         return users.size();
     }
 
-    public String changePhoneNumber(Long userId, String newNumber) {
+    public UserToTransfer changePhoneNumber(Long userId, String newNumber) {
         if (usersRepository.existsById(userId)) {
-            if (newNumber.length() == 9) {
-                User user = usersRepository.findById(userId).get();
-                user.setPhoneNumber(newNumber);
-                usersRepository.save(user);
-                return "Number changed successfully";
-            } else {
-                return "Wrong number format";
-            }
+            newNumber = newNumber.substring(16,25);
+            User user = usersRepository.findById(userId).get();
+            user.setPhoneNumber(newNumber);
+            usersRepository.save(user);
+            return UserMapper.mapToUserToTransfer(user);
         }
-        return "User does not exist";
+        return new UserToTransfer();
     }
 
-    public String changeRole(Long userId, String newRole) {
+    public UserToTransfer changeRole(Long userId, String newRole) {
         if (usersRepository.existsById(userId)) {
             User user = usersRepository.findById(userId).get();
-            user.setRole(newRole);
+            if(newRole.contains("ROLE_ADMIN")) {
+                user.setRole("ROLE_ADMIN");
+            } else if (newRole.contains("ROLE_USER")) {
+                user.setRole("ROLE_USER");
+            }
             usersRepository.save(user);
-            return "Role changed successfully";
+            return UserMapper.mapToUserToTransfer(user);
         }
-        return "User does not exist";
+        return new UserToTransfer();
     }
 
-    public String changePassword(Long userId, String oldPassword, String newPassword) {
+    public UserToTransfer changePassword(Long userId, String oldPassword, String newPassword) {
         if (usersRepository.existsById(userId)) {
             User user = usersRepository.findById(userId).get();
             if (user.getPassword().equals(oldPassword)) {
                 user.setPassword(newPassword);
+                usersRepository.save(user);
+                return UserMapper.mapToUserToTransfer(user);
             } else {
-                return "Old password is incorrect";
+                return new UserToTransfer();
             }
-            usersRepository.save(user);
-            return "Password changed successfully";
         }
-        return "User does not exist";
+        return new UserToTransfer();
     }
 
 
-    public String changeAddress(Long userId, Address address) {
+    public UserToTransfer changeAddress(Long userId, Address address) {
         Address existingAddress = null;
+        User user = null;
         if (usersRepository.existsById(userId)) {
-            existingAddress = usersRepository.findById(userId).get().getAddress();
+            user = usersRepository.findById(userId).get();
+            existingAddress = user.getAddress();
+        } else {
+            return new UserToTransfer();
         }
-        if (existingAddress == null) {
-            return "User does not exist";
-        }
-        if (isStringCorrect(address.getCity())) {
+
+        if ( !address.getCity().isEmpty() && !address.getCity().isBlank() && !address.getCity().equals(existingAddress.getCity())) {
             existingAddress.setCity(address.getCity());
         }
-        if (isStringCorrect(address.getStreet())) {
+        if ( !address.getStreet().isEmpty() && !address.getStreet().isBlank() && !address.getStreet().equals(existingAddress.getStreet())) {
             existingAddress.setStreet(address.getStreet());
         }
-        if (isStringCorrect(address.getZipCode())) {
+        if (!address.getZipCode().isEmpty() && !address.getZipCode().isBlank() && !address.getZipCode().equals(existingAddress.getZipCode())) {
             existingAddress.setZipCode(address.getZipCode());
         }
-        if (isStringCorrect(address.getHouseNumber())) {
+        if (!address.getHouseNumber().isEmpty() && !address.getHouseNumber().isBlank() && !address.getHouseNumber().equals(existingAddress.getHouseNumber())) {
             existingAddress.setHouseNumber(address.getHouseNumber());
         }
         addressesRepository.save(existingAddress);
-        return "Address update pass successfully";
+        user.setAddress(existingAddress);
+        return UserMapper.mapToUserToTransfer(user);
     }
 
-    public String removeUser(Long id) {
+    public UserToTransfer removeUser(Long id) {
         String message = "";
+        User user = null;
         if (usersRepository.existsById(id)) {
-            User user = usersRepository.findById(id).get();
+            user = usersRepository.findById(id).get();
             if (user.getLibraryMember().getNumOfBorrowedBooks() == 0) {
                 usersRepository.deleteById(id);
+                addressesRepository.deleteById(user.getAddress().getId());
+                membersRepository.deleteById(user.getLibraryMember().getId());
                 message = "User removed successfully";
             } else {
                 message = "User cannot be removed because he has borrowed books";
@@ -177,11 +187,14 @@ public class UserService {
         if (message.isEmpty()) {
             message = "User does not exist";
         }
-        return message;
+        if(message.equals("User removed successfully")){
+            return UserMapper.mapToUserToTransfer(user);
+        }
+        return new UserToTransfer();
     }
 
     private boolean isStringCorrect(String strToVerify) {
-        if (strToVerify.isBlank() || strToVerify == null) {
+        if (strToVerify.isBlank() || strToVerify.isEmpty()) {
             return false;
         }
         return true;

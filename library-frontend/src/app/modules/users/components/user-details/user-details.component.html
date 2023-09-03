@@ -115,9 +115,9 @@
   </div>
 </div>
 <div class="button-row">
-  <button mat-raised-button class="button-margin" color="primary">Zmień hasło</button>
-  <button mat-raised-button class="button-margin" color="primary">Zmień numer telefonu</button>
-  <button mat-raised-button class="button-margin" color="primary" *ngIf="isAdmin">Zmień typ konta</button>
-  <button mat-raised-button class="button-margin" color="primary">Zmień adres</button>
-  <button mat-raised-button class="button-margin" color="warn">Usuń użytkownika</button>
+  <button mat-raised-button class="button-margin" color="primary" (click)="openChangePassword()">Zmień hasło</button>
+  <button mat-raised-button class="button-margin" color="primary" (click)="openChangePhoneNumber()">Zmień numer telefonu</button>
+  <button mat-raised-button class="button-margin" color="primary" (click)="changeRole()" *ngIf="isAdmin">Zmień typ konta</button>
+  <button mat-raised-button class="button-margin" color="primary" (click)="openChangeAddress()">Zmień adres</button>
+  <button mat-raised-button class="button-margin" color="warn" (click)="deleteUser()">Usuń użytkownika</button>
 </div>

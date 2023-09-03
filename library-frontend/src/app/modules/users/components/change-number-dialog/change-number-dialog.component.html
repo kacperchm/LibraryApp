@@ -1,0 +1,18 @@
+<mat-dialog-content>
+  <h2>Zmień Numer Telefonu:</h2>
+  <form [formGroup]="numberForm" (ngSubmit)="onPhoneNumber()">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Nowy Numer Telefonu</mat-label>
+        <input matInput formControlName = "phoneNumber">
+        <mat-error *ngIf="controls.phoneNumber.invalid">{{getErrorMessage(controls.phoneNumber)}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button mat-raised-button color="warn" (click)="closeDialog()" type="button">Anuluj</button>
+      <button mat-raised-button color="primary" type="submit" class="mx-1" [disabled]="numberForm.invalid">Zmień Numer</button>
+    </div>
+    <app-alert *ngIf="errorMessage" [text]="errorMessage"></app-alert>
+  </form>
+</mat-dialog-content>
+

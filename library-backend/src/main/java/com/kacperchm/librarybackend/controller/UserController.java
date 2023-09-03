@@ -5,6 +5,7 @@ import com.kacperchm.librarybackend.model.User;
 import com.kacperchm.librarybackend.model.UserToTransfer;
 import com.kacperchm.librarybackend.model.filter.BookFilter;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
+import com.kacperchm.librarybackend.model.request.ChangePasswordReq;
 import com.kacperchm.librarybackend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,46 +77,46 @@ public class UserController {
                 .body(size);
     }
 
-    @PostMapping("/change-number/{id}")
-    public ResponseEntity<String> changeNumber(@PathVariable Long id, @RequestBody String number) {
-        String response = service.changePhoneNumber(id, number);
-        if (response.equals("Number changed successfully")) {
+    @PostMapping("/change/number/{id}")
+    public ResponseEntity<UserToTransfer> changeNumber(@PathVariable Long id, @RequestBody String number) {
+        UserToTransfer response = service.changePhoneNumber(id, number);
+        if (response.getId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    @PostMapping("/change-role/{id}")
-    public ResponseEntity<String> changeRole(@PathVariable Long id, @RequestBody String role) {
-        String response = service.changeRole(id, role);
-        if (response.equals("Role changed successfully")) {
+    @PostMapping("/change/role/{id}")
+    public ResponseEntity<UserToTransfer> changeRole(@PathVariable Long id, @RequestBody String role) {
+        UserToTransfer response = service.changeRole(id, role);
+        if (response.getId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    @PostMapping("/change-password/{id}")
-    public ResponseEntity<String> changePassword(@PathVariable Long id, @RequestBody String oldPassword, @RequestBody String newPassword) {
-        String response = service.changePassword(id, oldPassword, newPassword);
-        if (response.equals("Password changed successfully")) {
+    @PostMapping("/change/password/{id}")
+    public ResponseEntity<UserToTransfer> changePassword(@PathVariable Long id, @RequestBody ChangePasswordReq passwords) {
+        UserToTransfer response = service.changePassword(id, passwords.getOldPassword(), passwords.getNewPassword());
+        if (response.getId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    @PostMapping("/change-address/{id}")
-    public ResponseEntity<String> changeAddress(@PathVariable Long id, @RequestBody Address address) {
-        String response = service.changeAddress(id, address);
-        if (response.equals("Address update pass successfully")) {
+    @PostMapping("/change/address/{id}")
+    public ResponseEntity<UserToTransfer> changeAddress(@PathVariable Long id, @RequestBody Address address) {
+        UserToTransfer response = service.changeAddress(id, address);
+        if (response.getId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        String response = service.removeUser(id);
-        if (response.equals("User removed successfully") || response.equals("User does not exist")) {
+    public ResponseEntity<UserToTransfer> deleteUser(@PathVariable Long id) {
+        UserToTransfer response = service.removeUser(id);
+        if (response.getId() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);

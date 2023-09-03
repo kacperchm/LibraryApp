@@ -1,0 +1,8 @@
+<mat-dialog-content>
+  <h2>Czy napewno chcesz usunąć użytkownika?</h2>
+  <div class="d-flex justify-content-end">
+    <button mat-raised-button color="warn" (click)="closeDialog()" type="button">Anuluj</button>
+    <button mat-raised-button color="primary" type="submit" class="mx-1" (click)="onUserDelete()">Usuń</button>
+  </div>
+  <app-alert *ngIf="errorMessage" [text]="errorMessage"></app-alert>
+</mat-dialog-content>

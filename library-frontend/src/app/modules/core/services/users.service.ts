@@ -135,4 +135,67 @@ export class UsersService {
         })
       );
   }
+
+  changePassword(id: number, oldPassword: string, newPassword: string): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/users/change/password/${id}`, {oldPassword, newPassword})
+      .pipe(
+        map((user) => {
+          console.log(user)
+          return user;
+        })
+      )
+  }
+
+  changePhoneNumber(id: number, phoneNumber: string): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/users/change/number/${id}`, {phoneNumber})
+      .pipe(
+        map((user) => {
+          console.log(user)
+          return user;
+        })
+      )
+  }
+
+  changeRole(id: number, role: string): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/users/change/role/${id}`, {role})
+      .pipe(
+        map((user) => {
+          console.log(user)
+          return user;
+        })
+      )
+  }
+
+  changeAddress(
+    id: number,
+    addressId: number,
+    city: string,
+    zipCode: string,
+    street: string,
+    houseNumber: string,
+    ): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/users/change/address/${id}`,
+      {
+        addressId,
+        city,
+        zipCode,
+        street,
+        houseNumber})
+      .pipe(
+        map((user) => {
+          console.log(user)
+          return user;
+        })
+      )
+  }
+
+  deleteUser(id: number): Observable<UserResponse> {
+    return this.http.delete<UserResponse>(`${this.apiUrl}/users/delete/${id}`)
+      .pipe(
+        map((user) => {
+          console.log(user)
+          return user;
+        })
+      )
+  }
 }

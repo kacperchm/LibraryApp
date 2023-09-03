@@ -24,6 +24,14 @@ public class Address {
         this.houseNumber = houseNumber;
     }
 
+    public Address(Long id ,String city, String zipCode, String street, String houseNumber) {
+        this.id = id;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+        this.houseNumber = houseNumber;
+    }
+
     public Long getId() {
         return id;
     }
