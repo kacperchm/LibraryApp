@@ -20,9 +20,9 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     boolean existsByMail(String mail);
     boolean existsByPhoneNumber(String mail);
 
-    @Query("SELECT u FROM User u WHERE u.username LIKE %:username% AND u.phoneNumber LIKE %:phoneNumber% AND u.mail LIKE %:mail%")
+    @Query("SELECT u FROM User u WHERE u.username LIKE %:username% OR u.phoneNumber LIKE %:phoneNumber% OR u.mail LIKE %:mail%")
     Page<User> findUsersByUsernamePhoneNumberAndMail(@Param("username") String username, @Param("phoneNumber") String phoneNumber, @Param("mail") String mail, Pageable pageable);
 
-    @Query("SELECT u FROM User u WHERE u.username LIKE %:username% AND u.phoneNumber LIKE %:phoneNumber% AND u.mail LIKE %:mail%")
+    @Query("SELECT u FROM User u WHERE u.username LIKE %:username% OR u.phoneNumber LIKE %:phoneNumber% OR u.mail LIKE %:mail%")
     List<User> findUsersByFilter(@Param("username") String username, @Param("phoneNumber") String phoneNumber, @Param("mail") String mail);
 }

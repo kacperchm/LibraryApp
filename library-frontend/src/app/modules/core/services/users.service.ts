@@ -40,23 +40,17 @@ export class UsersService {
       })
       .pipe(
         map((response) => {
-          console.log(response)
-          if (!response.body) return {users: [], totalCount: 0};
+          console.log(response);
 
-          const arr: UserDetails[] = response.body.map(
-            ({
-               id, username, mail, phoneNumber, password, role, addressId,
-               city, zipCode, street, houseNumber, memberId, name, surname,
-               numOfBorrowedBooks, blockade
-             }) => {
-              return new UserDetails(
-                id, username, mail, phoneNumber, password, role, addressId, city, zipCode, street, houseNumber,
-                memberId, name, surname, numOfBorrowedBooks, blockade)
-            }
-          )
+
+          if (!Array.isArray(response.body)) {
+            return {users: [], totalCount: 0};
+          }
+
+          const arr: UserDetails[] = response.body;
 
           const totalCount = Number(response.headers.get("X-Total-Count"));
-          console.log(arr)
+          console.log(arr);
           return {users: arr, totalCount: totalCount};
         }),
       );
@@ -88,7 +82,7 @@ export class UsersService {
     } else {
       params = params
         .append('sort', 'ASC')
-        .append('order', 'title');
+        .append('order', 'username');
     }
     if (value) {
       params = params
@@ -97,56 +91,24 @@ export class UsersService {
 
 
     return this.http
-      .get<UserResponse[]>(`${this.apiUrl}/users/filtered-details`, {
+      .get<UserResponse[]>(`${this.apiUrl}/users/filter`, {
         observe: 'response',
         params,
       })
       .pipe(
         map((response) => {
-          if (!response.body) return {users: [], totalCount: 0};
+          console.log(response);
 
-          const usersArr: UserDetails[] = response.body.map(
-            ({
-               id,
-               username,
-               mail,
-               phoneNumber,
-               password,
-               role,
-               addressId,
-               city,
-               zipCode,
-               street,
-               houseNumber,
-               memberId,
-               name,
-               surname,
-               numOfBorrowedBooks,
-               blockade
-             }) => {
-              return new UserDetails(
-                id,
-                username,
-                mail,
-                phoneNumber,
-                password,
-                role,
-                addressId,
-                city,
-                zipCode,
-                street,
-                houseNumber,
-                memberId,
-                name,
-                surname,
-                numOfBorrowedBooks,
-                blockade)
-            }
-          )
+
+          if (!Array.isArray(response.body)) {
+            return {users: [], totalCount: 0};
+          }
+
+          const arr: UserDetails[] = response.body;
 
           const totalCount = Number(response.headers.get("X-Total-Count"));
-          console.log(usersArr)
-          return {users: usersArr, totalCount: totalCount};
+          console.log(arr);
+          return {users: arr, totalCount: totalCount};
         }),
       );
   }
@@ -162,5 +124,15 @@ export class UsersService {
         return value;
       })
     )
+  }
+
+  getUser(id: number): Observable<UserResponse> {
+    return this.http
+      .get<UserResponse>(`${this.apiUrl}/users/details/${id}`)
+      .pipe(
+        map((user) => {
+          return user;
+        })
+      );
   }
 }

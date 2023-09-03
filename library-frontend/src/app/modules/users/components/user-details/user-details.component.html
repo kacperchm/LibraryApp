@@ -1,1 +1,123 @@
-<p>user-details works!</p>
+<div class="details-container">
+  <div class="details-column">
+    <div class="header-div">
+      <h1 style="">Dane Użytkownika</h1>
+    </div>
+    <div>
+      <mat-list>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Imię:</a>
+            <a>{{name}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Nazwisko:</a>
+            <a>{{surname}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Nazwa Użytkownika:</a>
+            <a>{{username}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">E-mail:</a>
+            <a>{{mail}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Telefon:</a>
+            <a>{{phoneNumber}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Typ Konta:</a>
+            <a *ngIf="role === 'ROLE_ADMIN'">Administrator</a>
+            <a *ngIf="role === 'ROLE_USER'">Użytkownik</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </div>
+  <div class="details-column">
+    <div class="header-div">
+      <h1>Adres Zamieszkania</h1>
+    </div>
+    <div>
+      <mat-list>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Miasto:</a>
+            <a>{{city}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Kod Pocztowy:</a>
+            <a>{{zipCode}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Ulica:</a>
+            <a>{{street}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Numer Domu/Mieszkania:</a>
+            <a>{{houseNumber}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </div>
+  <div class="details-column">
+    <div class="header-div">
+      <h1>Informacje Biblioteczne</h1>
+    </div>
+    <div>
+      <mat-list>
+        <mat-list-item>
+          <div>
+            <a class="title-a">Ilość Wypożyczonych Książek:</a>
+            <a>{{numOfBorrowedBooks}}</a>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <div class="blockade-div">
+            <a class="title-a">Blokada Użytkownika:</a>
+            <div class="circle-container">
+              <div [ngClass]="{'green-circle': !blockade, 'red-circle': blockade}"></div>
+            </div>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </div>
+  </div>
+</div>
+<div class="button-row">
+  <button mat-raised-button class="button-margin" color="primary">Zmień hasło</button>
+  <button mat-raised-button class="button-margin" color="primary">Zmień numer telefonu</button>
+  <button mat-raised-button class="button-margin" color="primary" *ngIf="isAdmin">Zmień typ konta</button>
+  <button mat-raised-button class="button-margin" color="primary">Zmień adres</button>
+  <button mat-raised-button class="button-margin" color="warn">Usuń użytkownika</button>
+</div>

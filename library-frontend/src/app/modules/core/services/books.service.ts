@@ -122,6 +122,7 @@ export class BooksService {
               ),
           );
 
+          console.log(arr)
           const totalCount = Number(response.headers.get("X-Total-Count"));
           return {books: arr, totalCount: totalCount};
         }),

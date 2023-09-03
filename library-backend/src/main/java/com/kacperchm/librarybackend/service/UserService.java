@@ -1,14 +1,12 @@
 package com.kacperchm.librarybackend.service;
 
 import com.kacperchm.librarybackend.mapper.UserMapper;
-import com.kacperchm.librarybackend.model.Address;
-import com.kacperchm.librarybackend.model.Book;
-import com.kacperchm.librarybackend.model.User;
-import com.kacperchm.librarybackend.model.UserToTransfer;
-import com.kacperchm.librarybackend.model.filter.BookFilter;
+import com.kacperchm.librarybackend.model.*;
 import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.repository.AddressesRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,12 +27,19 @@ public class UserService {
         this.addressesRepository = addressesRepository;
     }
 
-    public User getUserInfo(Long id) {
+    @EventListener(ApplicationReadyEvent.class)
+    public void createAdmin() {
+        if(!usersRepository.existsByUsername("admin")) {
+            usersRepository.save(new User("admin", "admin@gmail.pl","","haslo123","ROLE_ADMIN", new Address(), new LibraryMember()));
+        }
+    }
+
+    public UserToTransfer getUserInfo(Long id) {
         User user = null;
         if (usersRepository.existsById(id)) {
             user = usersRepository.findById(id).get();
         }
-        return user;
+        return UserMapper.mapToUserToTransfer(user);
     }
 
     public List<UserToTransfer> getAllUsersInfo(int page, int limit, String sort, String order) {

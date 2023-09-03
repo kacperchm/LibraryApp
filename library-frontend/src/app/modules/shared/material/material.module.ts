@@ -13,6 +13,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {A11yModule} from "@angular/cdk/a11y";
 import {MatListModule} from "@angular/material/list";
 import {MatSelectModule} from "@angular/material/select";
+import {MatDividerModule} from "@angular/material/divider";
 
 
 
@@ -32,7 +33,8 @@ import {MatSelectModule} from "@angular/material/select";
     MatDialogModule,
     A11yModule,
     MatListModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDividerModule
   ]
 })
 export class MaterialModule { }

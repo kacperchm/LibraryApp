@@ -23,9 +23,9 @@ public class UserController {
     }
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<User> getUserDetails(@PathVariable Long id) {
+    public ResponseEntity<UserToTransfer> getUserDetails(@PathVariable Long id) {
         ResponseEntity<User> response;
-        User dto = service.getUserInfo(id);
+        UserToTransfer dto = service.getUserInfo(id);
         if (dto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -52,7 +52,7 @@ public class UserController {
                 .body(size);
     }
 
-    @GetMapping("/filtered-details")
+    @GetMapping("/filter")
     public ResponseEntity<List<UserToTransfer>> getUsersDetailsFiltered(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int limit,
@@ -69,10 +69,9 @@ public class UserController {
 
     @GetMapping("/size-filtered")
     public ResponseEntity<Integer> getQuantityOfFilteredBooks(
-            @RequestParam String filter,
-            @RequestParam String category
+            @RequestParam String filter
     ) {
-        int size = service.getQuantityOfFilteredUsers(new UserFilter(category, filter, filter));
+        int size = service.getQuantityOfFilteredUsers(new UserFilter(filter, filter, filter));
         return ResponseEntity.status(HttpStatus.OK)
                 .body(size);
     }

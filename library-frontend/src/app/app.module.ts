@@ -10,13 +10,10 @@ import {BooksModule} from "./modules/books/books.module";
 import {BorrowsModule} from "./modules/borrows/borrows.module";
 import {HomeModule} from "./modules/home/home.module";
 import {UsersModule} from "./modules/users/users.module";
-import { MyAccountComponent } from './modules/my-account/my-account.component';
-import {MyAccountModule} from "./modules/my-account/my-account.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    MyAccountComponent
   ],
     imports: [
         BrowserModule,
@@ -28,8 +25,7 @@ import {MyAccountModule} from "./modules/my-account/my-account.module";
         BorrowsModule,
         CoreModule,
         HomeModule,
-        UsersModule,
-        MyAccountModule
+        UsersModule
     ],
   providers: [],
   bootstrap: [AppComponent]

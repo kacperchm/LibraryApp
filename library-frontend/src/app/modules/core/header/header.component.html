@@ -6,7 +6,7 @@
       <button mat-button routerLink="/">Strona główna</button>
       <button mat-button routerLink="/books" *ngIf="user">Książki</button>
       <button mat-button routerLink="/users" *ngIf="isAdmin">Użytkownicy</button>
-      <button mat-button routerLink="/my-account" *ngIf="user">Moje Konto</button>
+      <button mat-button routerLink="/user-details/{{user.id}}" *ngIf="user">Moje Konto</button>
       <button mat-button routerLink="/logowanie" *ngIf="!user">Logowanie</button>
       <button mat-button (click)="logout()" *ngIf="user">Wyloguj się</button>
     </div>

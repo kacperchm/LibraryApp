@@ -17,7 +17,8 @@ export class UsersListingComponent  implements AfterViewInit, OnDestroy {
     'lp',
     'username',
     'mail',
-    'phoneNumber'
+    'phoneNumber',
+    'buttons'
   ];
   dataSource!: MatTableDataSource<UserDetails>;
   totalCount = 0;
