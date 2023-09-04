@@ -1,14 +1,17 @@
 package com.kacperchm.librarybackend.service;
 
-import com.kacperchm.librarybackend.model.Book;
-import com.kacperchm.librarybackend.model.Borrow;
-import com.kacperchm.librarybackend.model.LibraryMember;
-import com.kacperchm.librarybackend.model.User;
+import com.kacperchm.librarybackend.mapper.BorrowMapper;
+import com.kacperchm.librarybackend.model.*;
+import com.kacperchm.librarybackend.model.filter.UserFilter;
 import com.kacperchm.librarybackend.model.responses.BorrowResponse;
 import com.kacperchm.librarybackend.repository.BooksRepository;
 import com.kacperchm.librarybackend.repository.BorrowRepository;
 import com.kacperchm.librarybackend.repository.MembersRepository;
 import com.kacperchm.librarybackend.repository.UsersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +33,7 @@ public class BorrowService {
         this.membersRepository = membersRepository;
     }
 
-    public BorrowResponse borrowBook(Long userId, Long bookId) {
+    public BorrowToTransfer borrowBook(Long userId, Long bookId) {
         List<String> messages = new ArrayList<>();
         Book book = null;
         boolean bookStatus = false;
@@ -57,25 +60,13 @@ public class BorrowService {
 
             messages.add("Book has been borrowed");
 
-            return new BorrowResponse(messages, HttpStatus.CREATED);
-        }
-        if(user == null) {
-            messages.add("User does not exist");
-        } else if(blockade) {
-            messages.add("User has blockade");
+            return BorrowMapper.mapToBorrowToTransfer(borrow);
         }
 
-        if(book == null) {
-            messages.add("Book does not exist");
-        } else if(!bookStatus) {
-            messages.add("Book is not available");
-        }
-
-        return new BorrowResponse(messages, HttpStatus.CONFLICT);
+        return new BorrowToTransfer();
     }
 
-    public BorrowResponse returnBook(Long borrowId) {
-        List<String> messages = new ArrayList<>();
+    public BorrowToTransfer returnBook(Long borrowId) {
         if(borrowRepository.existsById(borrowId)) {
             Borrow borrow = borrowRepository.findById(borrowId).get();
             borrow.setReturned(true);
@@ -91,11 +82,9 @@ public class BorrowService {
             }
             membersRepository.save(member);
 
-            messages.add("Book has been returned");
-            return new BorrowResponse(messages, HttpStatus.OK);
+            return BorrowMapper.mapToBorrowToTransfer(borrow);
         }
-        messages.add("There is no such borrow ID");
-        return new BorrowResponse(messages, HttpStatus.CONFLICT);
+        return new BorrowToTransfer();
     }
 
     public List<Borrow> getNotReturnedBorrowedBook() {
@@ -112,15 +101,32 @@ public class BorrowService {
         return borrowRepository.findAll();
     }
 
-    public List<Borrow> getAllBooksBorrowedByUser(Long memberId) {
-        List<Borrow> borrowedList = new ArrayList<>();
-        List<Borrow> allBorrows = borrowRepository.findAll();
-        allBorrows.forEach(b -> {
-            if(b.getMember().getId() == memberId) {
-                borrowedList.add(b);
+    public List<BorrowToTransfer> getAllBooksBorrowedByUser(int page, int limit, String sort, String order, Long memberId) {
+        List<BorrowToTransfer> borrowedList = null;
+
+        sort = sort.toUpperCase();
+        Sort.Direction direction;
+        if (sort.equals("ASC")) {
+            direction = Sort.Direction.ASC;
+        } else {
+            direction = Sort.Direction.DESC;
+        }
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, order));
+
+        Page<Borrow> allBorrows = borrowRepository.findByMemberId(memberId, pageable);
+        if(allBorrows.getSize() > 0) {
+            borrowedList = new ArrayList<>();
+            for (Borrow b: allBorrows.getContent()) {
+                borrowedList.add(BorrowMapper.mapToBorrowToTransfer(b));
             }
-        });
+        }
         return  borrowedList;
+    }
+
+    public int getQuantityOfBooksBorrowedByUser(Long id) {
+        List<Borrow> borrows;
+        borrows = borrowRepository.findByMemberId(id);
+        return borrows.size();
     }
 
     public List<Borrow> getAllNotReturnedBooksBorrowedByUser(Long memberId) {

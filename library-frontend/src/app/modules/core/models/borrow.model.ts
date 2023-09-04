@@ -9,3 +9,27 @@ export interface Borrow {
   returnDate: Date;
   returned: boolean;
 }
+
+export interface BorrowResponse {
+  id: number;
+  author: string;
+  title: string;
+  borrowDate: string;
+  returnDate: string;
+  returned: boolean;
+}
+
+export class BorrowDetails {
+  constructor(id: number,
+              author: string,
+              title: string,
+              borrowDate: string,
+              returnDate: string,
+              returned: boolean) {
+  }
+}
+
+export interface GetBorrowsResponse{
+  borrows: BorrowDetails[];
+  totalCount: number;
+}

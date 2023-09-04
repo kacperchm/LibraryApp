@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BorrowsComponent } from './borrows.component';
+import { BorrowsDetailsComponent } from './borrows-details.component';
 
-describe('BorrowsComponent', () => {
-  let component: BorrowsComponent;
-  let fixture: ComponentFixture<BorrowsComponent>;
+describe('BorrowsDetailsComponent', () => {
+  let component: BorrowsDetailsComponent;
+  let fixture: ComponentFixture<BorrowsDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BorrowsComponent ]
+      declarations: [ BorrowsDetailsComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BorrowsComponent);
+    fixture = TestBed.createComponent(BorrowsDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

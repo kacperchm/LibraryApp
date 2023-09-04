@@ -115,6 +115,7 @@
   </div>
 </div>
 <div class="button-row">
+  <button mat-raised-button class="button-margin" color="primary" [routerLink]="'member/borrows/' + memberId">Pokaż wypożyczenia</button>
   <button mat-raised-button class="button-margin" color="primary" (click)="openChangePassword()">Zmień hasło</button>
   <button mat-raised-button class="button-margin" color="primary" (click)="openChangePhoneNumber()">Zmień numer telefonu</button>
   <button mat-raised-button class="button-margin" color="primary" (click)="changeRole()" *ngIf="isAdmin">Zmień typ konta</button>

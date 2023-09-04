@@ -86,15 +86,6 @@ export class BooksListingComponent implements AfterViewInit, OnDestroy, OnInit {
           this.dataSource = new MatTableDataSource<Book>(books);
         }),
     );
-
-    /*this.sub.add(
-      this.filterValue.valueChanges
-        .pipe(debounceTime(500), distinctUntilChanged())
-        .subscribe((value) => {
-          const val = value?.trim();
-          this.applyFilter(val, this.selectedCategoryControl.value);
-        }),
-    );*/
   }
 
   onCategorySelectionChange() {
