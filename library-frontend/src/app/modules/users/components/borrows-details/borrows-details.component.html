@@ -20,12 +20,12 @@
 
         <ng-container matColumnDef="borrowDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Wypożyczenia</th>
-          <td mat-cell *matCellDef="let row"> {{row.borrowDate}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.borrowDate | date: 'yyyy-MM-dd' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="returnDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Wymagana Data Zwrotu</th>
-          <td mat-cell *matCellDef="let row"> {{row.returnDate}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.returnDate | date: 'yyyy-MM-dd' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="returned">
