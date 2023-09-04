@@ -1,0 +1,21 @@
+<mat-dialog-content>
+  <h2>Wypożycz książkę {{data.title}}:</h2>
+  <form [formGroup]="borrowForm" (ngSubmit)="onBorrowBook()">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Użytkownik</mat-label>
+        <mat-select formControlName="user" >
+          <mat-option *ngFor="let b of borrows" [value]="b.id">
+            E-mail: {{b.mail}} | Tel.: {{b.phoneNumber}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="controls.user.invalid">{{getErrorMessage(controls.user)}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button mat-raised-button color="warn" (click)="closeDialog()" type="button">Anuluj</button>
+      <button mat-raised-button color="primary" type="submit" class="mx-1" [disabled]="borrowForm.invalid">Wypożycz</button>
+    </div>
+    <app-alert *ngIf="errorMessage" [text]="errorMessage"></app-alert>
+  </form>
+</mat-dialog-content>

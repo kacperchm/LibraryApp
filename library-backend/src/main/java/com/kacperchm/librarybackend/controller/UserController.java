@@ -46,6 +46,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
+    @GetMapping("/details/all")
+    public ResponseEntity<List<UserToTransfer>> getAllUsersDetails() {
+        List<UserToTransfer> users = service.getAllUsers();
+        if (users.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
     @GetMapping("/size")
     public ResponseEntity<Integer> getQuantityOfBooks() {
         int size = service.getQuantityOfUsers();

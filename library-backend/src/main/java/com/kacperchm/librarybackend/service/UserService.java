@@ -45,6 +45,15 @@ public class UserService {
         return UserMapper.mapToUserToTransfer(user);
     }
 
+    public List<UserToTransfer> getAllUsers() {
+        List<User> users = usersRepository.findAllUsersOrderByEmail();
+        List<UserToTransfer> transferList = new ArrayList<>();
+        for (User u: users) {
+            transferList.add(UserMapper.mapToUserToTransfer(u));
+        }
+        return transferList;
+    }
+
     public List<UserToTransfer> getAllUsersInfo(int page, int limit, String sort, String order) {
         sort = sort.toUpperCase();
         Sort.Direction direction;

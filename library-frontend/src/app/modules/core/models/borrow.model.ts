@@ -1,5 +1,6 @@
 import {LibraryMember} from "./library-member.model";
 import {Book} from "./book.model";
+import {FormControl} from "@angular/forms";
 
 export interface Borrow {
   id: number;
@@ -32,4 +33,27 @@ export class BorrowDetails {
 export interface GetBorrowsResponse{
   borrows: BorrowDetails[];
   totalCount: number;
+}
+
+export interface PostBorrowForm {
+  user: FormControl<number>;
+}
+
+export interface BorrowUserVal {
+  id: number;
+  username: string;
+  mail: string;
+  phoneNumber: string;
+  password: string;
+  role: string;
+  addressId: number;
+  city: string;
+  zipCode: string;
+  street: string;
+  houseNumber: string;
+  memberId: number;
+  name: string;
+  surname: string;
+  numOfBorrowedBooks: number;
+  blockade: boolean;
 }

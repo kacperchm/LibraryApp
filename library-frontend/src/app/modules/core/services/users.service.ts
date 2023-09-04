@@ -7,6 +7,7 @@ import {Book, BookResponse, GetBooksResponse} from "../models/book.model";
 import {GetUsersResponse, UserDetails, UserResponse} from "../models/user.model";
 import {Address} from "../models/address.model";
 import {LibraryMember} from "../models/library-member.model";
+import {BorrowUserVal} from "../models/borrow.model";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,22 @@ export class UsersService {
 
   constructor(private http: HttpClient,
               private router: Router) {
+  }
+
+  getAllUsers(): Observable<BorrowUserVal[]> {
+    return this.http
+      .get<UserResponse[]>(`${this.apiUrl}/users/details/all`, {
+        observe: 'response',
+      })
+      .pipe(
+        map((response) => {
+          if (!Array.isArray(response.body)) {
+             return [];
+          }
+
+          return response.body;
+        }),
+      );
   }
 
   getUsers(

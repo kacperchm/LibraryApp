@@ -25,4 +25,7 @@ public interface UsersRepository extends JpaRepository<User,Long> {
 
     @Query("SELECT u FROM User u WHERE u.username LIKE %:username% OR u.phoneNumber LIKE %:phoneNumber% OR u.mail LIKE %:mail%")
     List<User> findUsersByFilter(@Param("username") String username, @Param("phoneNumber") String phoneNumber, @Param("mail") String mail);
+
+    @Query("SELECT u FROM User u ORDER BY u.mail ASC")
+    List<User> findAllUsersOrderByEmail();
 }

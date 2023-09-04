@@ -1,18 +1,14 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserDetails} from "../../../core/models/user.model";
 import {UsersService} from "../../../core/services/users.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {map, merge, startWith, Subscription, switchMap} from "rxjs";
+import {Subscription, switchMap} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {ChangePasswordDialogComponent} from "../change-password-dialog/change-password-dialog.component";
 import {ChangeNumberDialogComponent} from "../change-number-dialog/change-number-dialog.component";
 import {ChangeRoleDialogComponent} from "../change-role-dialog/change-role-dialog.component";
 import {ChangeAddressDialogComponent} from "../change-address-dialog/change-address-dialog.component";
 import {DeleteUserDialogComponent} from "../delete-user-dialog/delete-user-dialog.component";
-import {MatTableDataSource} from "@angular/material/table";
-import {BorrowDetails} from "../../../core/models/borrow.model";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
 import {BorrowsService} from "../../../core/services/borrows.service";
 
 @Component({
@@ -20,7 +16,7 @@ import {BorrowsService} from "../../../core/services/borrows.service";
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css']
 })
-export class UserDetailsComponent implements OnInit, AfterViewInit {
+export class UserDetailsComponent implements OnInit {
   user!: UserDetails;
   id!: number;
   username!: string;
@@ -41,12 +37,6 @@ export class UserDetailsComponent implements OnInit, AfterViewInit {
   myRole!: string | null;
   isAdmin!: boolean;
   sub = new Subscription();
-  // totalCount = 0;
-  // dataSource!: MatTableDataSource<BorrowDetails>;
-  // seeBorrows = false;
-  //
-  // @ViewChild(MatPaginator) paginator!: MatPaginator;
-  // @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private usersService: UsersService,
@@ -54,7 +44,8 @@ export class UserDetailsComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.isAdmin = localStorage.getItem("user")!.includes('ROLE_ADMIN');
@@ -83,45 +74,6 @@ export class UserDetailsComponent implements OnInit, AfterViewInit {
       });
   }
 
-/*  getBorrows() {
-    this.borrowsService.getQuantityOfBorrows(this.memberId).subscribe({
-      next: value => {
-        this.totalCount = value;
-      }
-    })
-
-    this.sub.add(
-      merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-          startWith({}),
-          switchMap(() => {
-            console.log(this.memberId + "start2")
-            const pageIndex = this.paginator.pageIndex;
-            const itemsPerPage = this.paginator.pageSize;
-            const sortDirection = this.sort.direction;
-            const sortColumnName = this.sort.active;
-            const mId = this.memberId;
-
-            return this.borrowsService.getBorrowedBooks(
-              mId,
-              pageIndex,
-              itemsPerPage,
-              sortDirection,
-              sortColumnName,
-            );
-          }),
-          map((data) => {
-            return data.borrows;
-          }),
-        )
-        .subscribe((borrows) => {
-          this.dataSource = new MatTableDataSource<BorrowDetails>(borrows);
-        }),
-    );
-
-    this.seeBorrows = true;
-
-  }*/
 
   openChangePassword() {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
@@ -178,7 +130,4 @@ export class UserDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-
-  }
 }

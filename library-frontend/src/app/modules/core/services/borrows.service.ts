@@ -67,4 +67,16 @@ export class BorrowsService {
         })
       )
   }
+
+  borrowBook( bookId:number, userId:number): Observable<BorrowDetails> {
+    let params = new HttpParams()
+      .append('bookId', bookId)
+      .append('userId', userId)
+    return this.http.post<BorrowResponse>(`${this.apiUrl}/borrow`, params)
+      .pipe(
+        map((borrow) => {
+          return borrow
+        })
+      )
+  }
 }

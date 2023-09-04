@@ -41,6 +41,13 @@
         <td mat-cell *matCellDef="let row"> <div [ngClass]="{'green-circle': row.availability, 'red-circle': !row.availability}"></div>  </td>
       </ng-container>
 
+      <ng-container matColumnDef="buttons">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-raised-button color="primary" (click)="openBorrow(row.id, row.title, userIdFromUrl, isAdmin)" [disabled]="!row.availability">Wypożycz</button>
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
