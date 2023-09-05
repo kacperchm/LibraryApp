@@ -26,53 +26,22 @@ public class BookService {
         this.repository = repository;
     }
 
-    public BookResponse addBook(Book book) {
+    public Book addBook(Book book) {
         Book addedBook = new Book(book.getAuthor(), book.getTitle(), book.getPublicationYear(), book.getCategory());
         int sizeBeforeAdd = repository.findAll().size();
         try {
             if (areAllRequiredFieldsFilledInCorrect(addedBook)) {
-                repository.save(addedBook);
+                Book retBook = repository.save(addedBook);
                 int sizeAfterAdd = repository.findAll().size();
                 if (sizeAfterAdd > sizeBeforeAdd) {
-                    return new BookResponse("Book added successfully", HttpStatus.CREATED);
+                    return retBook;
                 }
 
             }
         } catch (Exception e) {
-            return new BookResponse("Failed to add book. Server-side error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Book();
         }
-        return new BookResponse(getRequiredFieldsErrorMessage(book), HttpStatus.CONFLICT);
-    }
-
-    private String getRequiredFieldsErrorMessage(Book book) {
-        List<String> fieldsList = new ArrayList<>();
-        String message = "";
-        if (!isStringCorrect(book.getAuthor())) {
-            fieldsList.add("Author");
-        }
-        if (!isStringCorrect(book.getCategory())) {
-            fieldsList.add("Category");
-        }
-        if (!isStringCorrect(book.getTitle())) {
-            fieldsList.add("Title");
-        }
-        if ((book.getPublicationYear() / 1900 > 1 && book.getPublicationYear() <= LocalDateTime.now().getYear())) {
-            fieldsList.add("Publication Year");
-        }
-        if (fieldsList.size() > 1) {
-            message = "Fields with blank or invalid values: ";
-            for (String field : fieldsList) {
-                message = message + field + ", ";
-            }
-        } else {
-            message = "Field with blank or invalid value: " + fieldsList.get(0);
-        }
-        message = message.trim();
-        if (message.charAt((message.length() - 1)) == ',') {
-            message = message.substring(0, message.length() - 1);
-        }
-        message = message + ".";
-        return message;
+        return new Book();
     }
 
     private boolean areAllRequiredFieldsFilledInCorrect(Book book) {

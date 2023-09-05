@@ -22,11 +22,16 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addBook(@RequestBody Book book) {
-        BookResponse bookResponse = service.addBook(book);
+    public ResponseEntity<Book> addBook(@RequestBody Book book) {
+        Book bookResponse = service.addBook(book);
+        if(bookResponse.getId() != null) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(bookResponse);
+        }
         return ResponseEntity
-                .status(bookResponse.getStatus())
-                .body(bookResponse.getMessage());
+                .status(HttpStatus.CONFLICT)
+                .body(bookResponse);
     }
 
     @DeleteMapping("/delete/{id}")

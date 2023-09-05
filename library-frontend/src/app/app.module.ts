@@ -9,6 +9,7 @@ import {AuthModule} from "./modules/auth/auth.module";
 import {BooksModule} from "./modules/books/books.module";
 import {HomeModule} from "./modules/home/home.module";
 import {UsersModule} from "./modules/users/users.module";
+import {AddModule} from "./modules/add/add.module";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {UsersModule} from "./modules/users/users.module";
         BooksModule,
         CoreModule,
         HomeModule,
-        UsersModule
+        UsersModule,
+        AddModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

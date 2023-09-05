@@ -1,3 +1,5 @@
+import {FormControl} from "@angular/forms";
+
 export interface BookResponse {
   id: number;
   author: string;
@@ -21,4 +23,16 @@ export class Book{
 export interface GetBooksResponse{
   books: Book[];
   totalCount: number;
+}
+
+export interface PostBookForm {
+  author: FormControl<string>;
+  title: FormControl<string>;
+  publicationYear: FormControl<number>;
+  category: FormControl<string>;
+}
+
+export interface Category {
+  value: string;
+  viewValue: string;
 }

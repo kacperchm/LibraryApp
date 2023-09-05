@@ -15,6 +15,13 @@ export class BooksService {
               private router: Router,) {
   }
 
+  addBook(book: Book): Observable<BookResponse> {
+    return this.http.post<BookResponse>(`${this.apiUrl}/book/add`, book).pipe(
+      map((b) => {
+        return b;
+      }))
+  }
+
   getCategory(): Observable<String[]> {
     return this.http.get<String[]>(`${this.apiUrl}/book/categories`).pipe(
       map((categories) => {

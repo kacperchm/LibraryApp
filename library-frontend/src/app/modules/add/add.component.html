@@ -1,0 +1,47 @@
+<h2>Dodaj książkę:</h2>
+<div class="add-book-wrapper mt-3">
+  <form [formGroup]="bookForm" (ngSubmit)="onAddBook()">
+    <div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Autor</mat-label>
+          <input matInput formControlName="author">
+          <mat-error *ngIf="controls.author.invalid">{{getErrorMessage(controls.author)}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Tytuł</mat-label>
+          <input matInput formControlName="title">
+          <mat-error *ngIf="controls.title.invalid">{{getErrorMessage(controls.title)}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Data Publikacji</mat-label>
+          <input matInput formControlName="publicationYear">
+          <mat-error *ngIf="controls.publicationYear.invalid">{{getErrorMessage(controls.publicationYear)}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Kategoria</mat-label>
+          <mat-select [(ngModel)]="selectedValue" formControlName="category">
+            <mat-option *ngFor="let cat of categories" [value]="cat.value">
+              {{cat.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="controls.category.invalid">{{getErrorMessage(controls.category)}}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end center-div">
+      <button mat-raised-button color="primary" type="submit" [disabled]="bookForm.invalid">Zarejestruj się
+      </button>
+    </div>
+  </form>
+  <div class="center-div">
+    <app-alert *ngIf="errorMessage" [text]="errorMessage"></app-alert>
+  </div>
+</div>
+
