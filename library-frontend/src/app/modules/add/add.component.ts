@@ -1,10 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../core/services/auth.service";
 import {Router} from "@angular/router";
 import {Book, Category} from "../core/models/book.model";
-import {PostNumberForm} from "../core/models/user.model";
-import {UsersService} from "../core/services/users.service";
 import {BooksService} from "../core/services/books.service";
 
 @Component({
@@ -32,24 +29,28 @@ export class AddComponent {
   ];
 
   bookForm = new FormGroup({
-    author: new FormControl('', {nonNullable: true,
+    author: new FormControl('', {
+      nonNullable: true,
       validators: [
         Validators.required,
       ],
     }),
-    title: new FormControl('', {nonNullable: true,
+    title: new FormControl('', {
+      nonNullable: true,
       validators: [
         Validators.required,
       ],
     }),
-    publicationYear: new FormControl(2000, {nonNullable: true,
+    publicationYear: new FormControl(2000, {
+      nonNullable: true,
       validators: [
         Validators.required,
         Validators.maxLength(4),
         Validators.minLength(4),
       ],
     }),
-    category: new FormControl('', {nonNullable: true,
+    category: new FormControl('', {
+      nonNullable: true,
       validators: [
         Validators.required,
       ],
@@ -59,7 +60,8 @@ export class AddComponent {
   constructor(
     private router: Router,
     private booksService: BooksService,
-  ) {}
+  ) {
+  }
 
   get controls() {
     return this.bookForm.controls;
@@ -86,7 +88,7 @@ export class AddComponent {
     let book = new Book(0, formValues.author, formValues.title, formValues.publicationYear, formValues.category, true)
     this.booksService.addBook(book).subscribe({
       next: (value) => {
-        if(value !== null){
+        if (value !== null) {
           this.router.navigate(['/']);
         }
       },

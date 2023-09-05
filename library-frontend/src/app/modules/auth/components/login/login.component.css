@@ -1,11 +1,9 @@
 .login-wrapper {
-  max-width: 600px;
-  margin: 10px auto;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
 }
 
 mat-form-field {
