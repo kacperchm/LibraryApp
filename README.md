@@ -12,7 +12,7 @@
 ### Ważne informacje:
 * **W celu konfiguracji dostępu do bazy danych należy skopiować plik db-example.properties nadać nazwę db.properties i ustawić prawidłowe dane.**
 * **Aplikacja w zależności od rodzaju zalogowanego użytkownika umożliwia różne funkcjonalności.**
-* **Po pierwszym uruchomieniu aplikacji dostępne jest konto administratora. Mail: admin@gmail.pl Hasło: haslo123 **
+* **Po pierwszym uruchomieniu aplikacji dostępne jest konto administratora. Mail: admin@gmail.pl Hasło: haslo123.**
 
 ### Opis aplikacji:
 **Po uruchomieniu backend'u i frontend'u przy podstawowym ustawieniu należy przejść na stronę http://localhost:4200/, gdzie wyświetli się strona główna na której znajdują się podstawowe informacje na temat biblioteki. Na toolbar'ze mamy dostępne opcje przejścia do logowania lub przekierowania na stronę główną. Po naciśnięciu button'a Logowanie nastąpi przekierowanie na stronę http://localhost:4200/logowanie, gdzie widoczna będzie formatka logowania. Poniżej przycisku Zaloguj znajduje się opcja rejestracji, gdzie możemy utworzyć nowego użytkownika. 
