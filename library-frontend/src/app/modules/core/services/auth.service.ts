@@ -19,10 +19,8 @@ export class AuthService {
   ) {}
 
   login(userData: UserLoginData): Observable<User> {
-    console.log(userData)
     return this.http.post<User>(`${this.apiUrl}/login`, userData).pipe(
       tap((u) => {
-        console.log(u)
         this.handleAuthentication(u)
       }),
     );
@@ -33,7 +31,6 @@ export class AuthService {
   }
 
   register(registerUser: RegisterUser): Observable<User> {
-    console.log(registerUser)
     return this.http.post<User>(`${this.apiUrl}/register`, registerUser);
   }
 

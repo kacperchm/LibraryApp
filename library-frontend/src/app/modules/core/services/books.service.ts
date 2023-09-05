@@ -74,7 +74,6 @@ export class BooksService {
   getQuantityOfBooks(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/book/size`).pipe(
       map((value) => {
-        console.log(value)
         return value;
       })
     )
@@ -129,7 +128,6 @@ export class BooksService {
               ),
           );
 
-          console.log(arr)
           const totalCount = Number(response.headers.get("X-Total-Count"));
           return {books: arr, totalCount: totalCount};
         }),
@@ -147,7 +145,6 @@ export class BooksService {
 
     return this.http.get<number>(`${this.apiUrl}/book/size-filtered`, {params}).pipe(
       map((value) => {
-        console.log(value)
         return value;
       })
     )

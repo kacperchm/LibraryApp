@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import {BehaviorSubject, delay, filter, first, map, merge, Observer, startWith, Subscription, switchMap} from "rxjs";
+import {BehaviorSubject, delay, filter, map, merge, Observer, startWith, Subscription, switchMap} from "rxjs";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {BorrowDetails} from "../../../core/models/borrow.model";
@@ -13,7 +13,7 @@ import {UsersService} from "../../../core/services/users.service";
   templateUrl: './borrows-details.component.html',
   styleUrls: ['./borrows-details.component.css']
 })
-export class BorrowsDetailsComponent implements AfterViewInit, OnDestroy{
+export class BorrowsDetailsComponent implements AfterViewInit, OnDestroy {
   memberId!: number;
   userId!: number;
   displayedColumns: string[] = [
@@ -29,16 +29,17 @@ export class BorrowsDetailsComponent implements AfterViewInit, OnDestroy{
   totalCount = 0;
   sub = new Subscription();
   errorMessage = '';
-  memberIdSubject = new BehaviorSubject<number | null>(null);observer: Observer<unknown> = {
+  memberIdSubject = new BehaviorSubject<number | null>(null);
+  observer: Observer<unknown> = {
     next: (borrow) => {
-      console.log(borrow)
       this.errorMessage = '';
       this.router.navigate([`/user-details/${this.userId}`]);
     },
     error: (err) => {
       this.errorMessage = 'Wystąpił błąd';
     },
-    complete: () => {},
+    complete: () => {
+    },
   };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -67,7 +68,6 @@ export class BorrowsDetailsComponent implements AfterViewInit, OnDestroy{
       this.memberIdSubject.next(this.memberId);
     });
   }
-
 
 
   initAfterDelay(mId: number): void {
@@ -111,7 +111,6 @@ export class BorrowsDetailsComponent implements AfterViewInit, OnDestroy{
   }
 
   returnBook(borrowId: number) {
-      console.log(borrowId)
     this.borrowsService
       .returnBook(borrowId)
       .subscribe(this.observer)

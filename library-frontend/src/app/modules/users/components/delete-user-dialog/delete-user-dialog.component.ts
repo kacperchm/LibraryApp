@@ -1,6 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PostPasswordForm} from "../../../core/models/user.model";
+import {Component, Inject} from '@angular/core';
 import {Observer} from "rxjs";
 import {Router} from "@angular/router";
 import {UsersService} from "../../../core/services/users.service";
@@ -11,11 +9,10 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   templateUrl: './delete-user-dialog.component.html',
   styleUrls: ['./delete-user-dialog.component.css']
 })
-export class DeleteUserDialogComponent{
+export class DeleteUserDialogComponent {
   errorMessage = '';
   observer: Observer<unknown> = {
     next: (user) => {
-      console.log(user)
       this.closeDialog()
       this.errorMessage = '';
       this.router.navigate([`/users`]);
@@ -23,7 +20,8 @@ export class DeleteUserDialogComponent{
     error: (err) => {
       this.errorMessage = 'Wystąpił błąd';
     },
-    complete: () => {},
+    complete: () => {
+    },
   };
 
   constructor(
@@ -31,7 +29,8 @@ export class DeleteUserDialogComponent{
     private usersService: UsersService,
     private dialogRef: MatDialogRef<DeleteUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { userId: number },
-  ) {}
+  ) {
+  }
 
   closeDialog() {
     this.dialogRef.close();

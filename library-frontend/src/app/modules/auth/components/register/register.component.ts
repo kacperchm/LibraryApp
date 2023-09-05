@@ -1,10 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../core/services/auth.service";
 import {Router} from "@angular/router";
-import {RegisterUser, User} from "../../../core/models/user.model";
-import {Address} from "../../../core/models/address.model";
-import {LibraryMember} from "../../../core/models/library-member.model";
 
 @Component({
   selector: 'app-register',
@@ -74,7 +71,8 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) {}
+  ) {
+  }
 
   get controls() {
     return this.registerForm.controls;
@@ -100,7 +98,7 @@ export class RegisterComponent {
     const createdUser = this.registerForm.getRawValue();
     this.authService.register(createdUser).subscribe({
       next: (value) => {
-        if(value !== null){
+        if (value !== null) {
           this.router.navigate(['/logowanie']);
         }
       },
@@ -108,7 +106,5 @@ export class RegisterComponent {
         this.errorMessage = 'Użytkownik już istnieje lub wystąpił błąd serwera.';
       },
     });
-    console.log(this.registerForm.value);
-    // console.log(this.registerForm.getRawValue());
   }
 }

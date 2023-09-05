@@ -1,11 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PostRoleForm, Role} from "../../../core/models/user.model";
 import {Observer} from "rxjs";
 import {Router} from "@angular/router";
 import {UsersService} from "../../../core/services/users.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Borrow, BorrowUserVal, PostBorrowForm} from "../../../core/models/borrow.model";
+import {BorrowUserVal, PostBorrowForm} from "../../../core/models/borrow.model";
 import {BorrowsService} from "../../../core/services/borrows.service";
 
 @Component({
@@ -13,7 +12,7 @@ import {BorrowsService} from "../../../core/services/borrows.service";
   templateUrl: './borrow-book-dialog.component.html',
   styleUrls: ['./borrow-book-dialog.component.css']
 })
-export class BorrowBookDialogComponent implements OnInit{
+export class BorrowBookDialogComponent implements OnInit {
   borrowForm!: FormGroup<PostBorrowForm>;
   errorMessage = '';
   observer: Observer<unknown> = {
@@ -26,7 +25,8 @@ export class BorrowBookDialogComponent implements OnInit{
     error: (err) => {
       this.errorMessage = 'Wystąpił błąd';
     },
-    complete: () => {},
+    complete: () => {
+    },
   };
   selectedValue!: string;
 
@@ -39,17 +39,19 @@ export class BorrowBookDialogComponent implements OnInit{
     private dialogRef: MatDialogRef<BorrowBookDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       bookId: number,
-      title:string,
-    userId: number,
-    isAdmin: boolean},
-  ) {}
+      title: string,
+      userId: number,
+      isAdmin: boolean
+    },
+  ) {
+  }
 
   closeDialog() {
     this.dialogRef.close();
   }
 
   ngOnInit(): void {
-    if(this.data.isAdmin) {
+    if (this.data.isAdmin) {
       this.usersService.getAllUsers().subscribe({
         next: (value) => {
           this.borrows = value;
@@ -69,7 +71,8 @@ export class BorrowBookDialogComponent implements OnInit{
 
   private initForm() {
     this.borrowForm = new FormGroup({
-      user: new FormControl(0, {nonNullable: true,
+      user: new FormControl(0, {
+        nonNullable: true,
         validators: [
           Validators.required,
         ],

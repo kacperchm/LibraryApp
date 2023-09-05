@@ -16,7 +16,6 @@ export class ChangeNumberDialogComponent  implements OnInit{
   errorMessage = '';
   observer: Observer<unknown> = {
     next: (user) => {
-      console.log(user)
       this.closeDialog()
       this.errorMessage = '';
       this.router.navigate([`/users`]);

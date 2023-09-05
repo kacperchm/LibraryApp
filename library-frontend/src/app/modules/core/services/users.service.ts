@@ -3,10 +3,7 @@ import {environment} from "../../../../environments/environment.development";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {map, Observable} from "rxjs";
-import {Book, BookResponse, GetBooksResponse} from "../models/book.model";
 import {GetUsersResponse, UserDetails, UserResponse} from "../models/user.model";
-import {Address} from "../models/address.model";
-import {LibraryMember} from "../models/library-member.model";
 import {BorrowUserVal} from "../models/borrow.model";
 
 @Injectable({
@@ -27,7 +24,7 @@ export class UsersService {
       .pipe(
         map((response) => {
           if (!Array.isArray(response.body)) {
-             return [];
+            return [];
           }
 
           return response.body;
@@ -57,17 +54,13 @@ export class UsersService {
       })
       .pipe(
         map((response) => {
-          console.log(response);
-
 
           if (!Array.isArray(response.body)) {
             return {users: [], totalCount: 0};
           }
 
           const arr: UserDetails[] = response.body;
-
           const totalCount = Number(response.headers.get("X-Total-Count"));
-          console.log(arr);
           return {users: arr, totalCount: totalCount};
         }),
       );
@@ -76,7 +69,6 @@ export class UsersService {
   getQuantityOfUsers(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/users/size`).pipe(
       map((value) => {
-        console.log(value)
         return value;
       })
     )
@@ -114,17 +106,13 @@ export class UsersService {
       })
       .pipe(
         map((response) => {
-          console.log(response);
-
 
           if (!Array.isArray(response.body)) {
             return {users: [], totalCount: 0};
           }
 
           const arr: UserDetails[] = response.body;
-
           const totalCount = Number(response.headers.get("X-Total-Count"));
-          console.log(arr);
           return {users: arr, totalCount: totalCount};
         }),
       );
@@ -157,7 +145,6 @@ export class UsersService {
     return this.http.post<UserResponse>(`${this.apiUrl}/users/change/password/${id}`, {oldPassword, newPassword})
       .pipe(
         map((user) => {
-          console.log(user)
           return user;
         })
       )
@@ -167,7 +154,6 @@ export class UsersService {
     return this.http.post<UserResponse>(`${this.apiUrl}/users/change/number/${id}`, {phoneNumber})
       .pipe(
         map((user) => {
-          console.log(user)
           return user;
         })
       )
@@ -177,7 +163,6 @@ export class UsersService {
     return this.http.post<UserResponse>(`${this.apiUrl}/users/change/role/${id}`, {role})
       .pipe(
         map((user) => {
-          console.log(user)
           return user;
         })
       )
@@ -190,17 +175,17 @@ export class UsersService {
     zipCode: string,
     street: string,
     houseNumber: string,
-    ): Observable<UserResponse> {
+  ): Observable<UserResponse> {
     return this.http.post<UserResponse>(`${this.apiUrl}/users/change/address/${id}`,
       {
         addressId,
         city,
         zipCode,
         street,
-        houseNumber})
+        houseNumber
+      })
       .pipe(
         map((user) => {
-          console.log(user)
           return user;
         })
       )
@@ -210,7 +195,6 @@ export class UsersService {
     return this.http.delete<UserResponse>(`${this.apiUrl}/users/delete/${id}`)
       .pipe(
         map((user) => {
-          console.log(user)
           return user;
         })
       )

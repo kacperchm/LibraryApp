@@ -16,7 +16,6 @@ export class ChangeRoleDialogComponent implements OnInit{
   errorMessage = '';
   observer: Observer<unknown> = {
     next: (user) => {
-      console.log(user)
       this.closeDialog()
       this.errorMessage = '';
       this.router.navigate([`/users`]);
@@ -81,7 +80,6 @@ export class ChangeRoleDialogComponent implements OnInit{
   onChangeRole() {
     let rawValues = this.roleForm.getRawValue();
     const newRole: string = rawValues.role;
-    console.log(newRole)
     this.usersService
       .changeRole(this.data.userId, newRole)
       .subscribe(this.observer)

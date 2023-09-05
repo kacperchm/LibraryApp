@@ -51,7 +51,6 @@ export class BorrowsService {
   getQuantityOfBorrows(id: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/all/borrows/size/${id}`).pipe(
       map((value) => {
-        console.log(value)
         return value;
       })
     )

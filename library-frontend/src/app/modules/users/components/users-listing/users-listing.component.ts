@@ -72,7 +72,6 @@ export class UsersListingComponent  implements AfterViewInit, OnDestroy {
           }),
         )
         .subscribe((users) => {
-          console.log(users)
           this.dataSource = new MatTableDataSource<UserDetails>(users);
         }),
     );
